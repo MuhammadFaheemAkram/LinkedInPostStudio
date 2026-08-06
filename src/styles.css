@@ -1,0 +1,782 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: theme('colors.post.ink');
+    color: theme('colors.post.white');
+    font-family: theme('fontFamily.sans');
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    letter-spacing: 0;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+}
+
+@layer components {
+  /* ---------------------------------------------------------------- shell */
+  .app-shell {
+    @apply min-h-screen bg-post-ink text-post-white;
+  }
+
+  .studio-shell {
+    @apply grid min-h-screen grid-cols-[404px_1fr] gap-8 overflow-auto p-8;
+  }
+
+  .screenshot-shell {
+    @apply flex min-h-screen items-start justify-center bg-post-ink p-0;
+  }
+
+  .canvas-wrap {
+    @apply flex min-w-[1120px] justify-center;
+  }
+
+  .canvas-column {
+    @apply flex w-[1080px] flex-col gap-6;
+  }
+
+  /* LinkedIn caption panel (studio-only; never exported) */
+  .caption-panel {
+    @apply rounded-card border border-white/10 bg-post-surface p-7 shadow-ios;
+  }
+
+  .caption-panel-head {
+    @apply mb-4 flex items-start justify-between gap-4 border-b border-white/10 pb-4;
+  }
+
+  .caption-panel-title {
+    @apply text-[18px] font-bold text-post-white;
+  }
+
+  .caption-panel-note {
+    @apply mt-1 text-[13px] font-medium text-post-gray2;
+  }
+
+  .caption-text {
+    @apply m-0 whitespace-pre-wrap font-sans text-[16px] leading-relaxed text-post-white;
+  }
+
+  .caption-count {
+    @apply mt-4 border-t border-white/10 pt-3 font-mono text-[13px] font-bold uppercase tracking-[0.1em] text-post-gray2;
+  }
+
+  /* --------------------------------------------------------------- editor */
+  .editor-panel {
+    @apply sticky top-8 max-h-[calc(100vh-4rem)] overflow-y-auto rounded-card border border-white/10 bg-post-surface p-6 shadow-ios;
+  }
+
+  .editor-heading {
+    @apply mb-5 flex items-center justify-between gap-4 border-b border-white/10 pb-5;
+  }
+
+  .editor-eyebrow {
+    @apply text-[12px] font-bold uppercase tracking-[0.18em] text-post-accent;
+  }
+
+  .editor-title {
+    @apply mt-1 text-xl font-bold text-post-white;
+  }
+
+  .editor-intro {
+    @apply mb-5 rounded-sm2 border border-white/10 bg-post-quote p-4 text-sm font-medium leading-relaxed text-post-gray;
+  }
+
+  .editor-intro-meta {
+    @apply mt-4 flex flex-wrap gap-2 font-mono text-[12px] font-bold uppercase tracking-normal text-post-accent;
+  }
+
+  .editor-intro-meta span {
+    @apply rounded-full border border-post-accent/40 px-3 py-1.5;
+  }
+
+  .editor-section {
+    @apply space-y-4 border-b border-white/10 py-5 last:border-b-0 last:pb-0;
+  }
+
+  .editor-section-label {
+    @apply -mb-1 flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.14em] text-post-gray2;
+  }
+
+  .editor-label {
+    @apply mb-2 block text-[13px] font-semibold uppercase tracking-[0.08em] text-post-gray;
+  }
+
+  .editor-hint {
+    @apply mt-1.5 block text-[12px] font-medium leading-snug text-post-gray2;
+  }
+
+  .editor-input {
+    @apply w-full rounded-xl border border-white/10 bg-post-quote px-3 py-2.5 text-sm font-medium text-post-white outline-none transition placeholder:text-post-gray2 focus:border-post-accent;
+  }
+
+  .editor-textarea {
+    @apply min-h-28 resize-y leading-relaxed;
+  }
+
+  .editor-grid {
+    @apply grid grid-cols-2 gap-3;
+  }
+
+  .primary-button {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-post-accent px-4 py-3 text-sm font-bold text-white transition hover:bg-post-accentDeep;
+  }
+
+  .secondary-button {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-post-quote px-4 py-3 text-sm font-semibold text-post-white transition hover:border-post-accent;
+  }
+
+  /* --------------------------------------------------------------- canvas */
+  .post-canvas {
+    @apply flex w-[1080px] shrink-0 flex-col overflow-hidden bg-post-canvas p-16 text-post-white;
+    /* Ambient iOS blue glow, baked into the exported graphic */
+    background-color: theme('colors.post.canvas');
+    background-image:
+      radial-gradient(58% 46% at 86% -4%, rgba(10, 132, 255, 0.2) 0%, rgba(10, 132, 255, 0) 60%),
+      radial-gradient(48% 42% at -6% 104%, rgba(10, 132, 255, 0.12) 0%, rgba(10, 132, 255, 0) 58%);
+  }
+
+  /* ---------------------------------------------------------------- header */
+  .post-header {
+    @apply flex shrink-0 items-start justify-between gap-6;
+  }
+
+  .post-header-badges {
+    @apply flex flex-wrap items-center gap-3;
+  }
+
+  .badge {
+    @apply inline-flex items-center rounded-full px-5 py-2.5 text-badge tracking-normal;
+  }
+
+  .badge-accent {
+    @apply bg-post-accent font-semibold text-white;
+  }
+
+  .badge-outline {
+    @apply border border-white/10 bg-post-elevated font-semibold text-post-white;
+  }
+
+  .project-badge {
+    @apply flex min-w-[196px] flex-col items-end rounded-2xl border border-post-accent/30 bg-post-accent/[0.07] px-5 py-3 text-right leading-tight shadow-ios-glow;
+  }
+
+  .project-badge span {
+    @apply font-mono text-[15px] font-bold uppercase tracking-[0.14em] text-post-accent;
+  }
+
+  .project-badge strong {
+    @apply mt-1 text-[22px] font-bold text-post-white;
+  }
+
+  /* ----------------------------------------------------------- title block */
+  .post-title {
+    white-space: normal;
+    @apply w-full font-sans text-display text-post-white;
+  }
+
+  .post-title .highlight {
+    @apply text-post-accent;
+  }
+
+  .post-subtitle {
+    @apply max-w-[920px] text-subtitle text-post-gray;
+  }
+
+  /* ---------------------------------------------------------- center area */
+  .post-center {
+    @apply flex shrink-0 items-center justify-center py-10;
+  }
+
+  /* ------------------------------------------------------------- surfaces */
+  .card-surface {
+    @apply rounded-card border border-white/10 bg-post-card p-8 shadow-ios;
+  }
+
+  .card-surface-accent {
+    @apply border-post-accent/40 bg-post-accent/[0.06];
+  }
+
+  .card-title {
+    @apply mb-5 text-cardTitle text-post-white;
+  }
+
+  .card-body {
+    @apply text-body text-post-white;
+  }
+
+  .mono-label {
+    @apply font-mono text-post-accent;
+  }
+
+  /* ----------------------------------------------------------- quote card */
+  .quote-card {
+    @apply shrink-0 rounded-card border border-white/10 border-l-[3px] border-l-post-accent bg-post-quote p-8;
+  }
+
+  .quote-text {
+    @apply text-quote italic leading-[1.28] text-post-white;
+  }
+
+  /* --------------------------------------------------------------- footer */
+  .footer {
+    @apply mt-10 flex shrink-0 flex-col gap-5 border-t border-post-separator pt-7 text-post-white;
+  }
+
+  .footer-brand-row {
+    @apply flex items-center gap-3;
+  }
+
+  .footer-brand-mark {
+    @apply h-6 w-1.5 shrink-0 rounded-full bg-post-accent;
+  }
+
+  .footer-brand-title {
+    @apply text-[24px] font-bold leading-none tracking-tight text-post-white;
+  }
+
+  .footer-meta-row {
+    @apply flex w-full items-end justify-between gap-8;
+  }
+
+  .footer-info {
+    @apply flex flex-col;
+  }
+
+  .footer-author-row {
+    @apply flex items-center gap-2;
+  }
+
+  .footer-dash {
+    @apply text-[22px] font-semibold text-post-gray2;
+  }
+
+  .footer-name {
+    @apply text-[22px] font-bold text-post-white;
+  }
+
+  .footer-role {
+    @apply mt-1 text-[18px] font-semibold uppercase leading-tight tracking-[0.1em] text-post-gray;
+  }
+
+  .footer-link {
+    @apply mt-1 text-[20px] font-medium lowercase leading-tight tracking-normal text-post-accent;
+  }
+
+  .footer-watermark {
+    color: rgba(142, 142, 147, 0.32);
+    @apply pointer-events-none select-none font-mono text-[64px] font-extrabold italic leading-none tracking-tighter;
+  }
+
+  .footer-watermark-v2 {
+    @apply flex flex-col items-end gap-1;
+  }
+
+  .footer-watermark-label {
+    @apply font-mono text-[16px] font-bold uppercase leading-none tracking-[0.14em] text-post-accent;
+  }
+
+  .footer-watermark-count {
+    @apply font-mono text-[40px] font-extrabold italic leading-none tracking-tighter text-post-white;
+  }
+
+  /* ============================================================= LAYOUTS */
+
+  /* comparison */
+  .comparison-layout {
+    @apply grid w-full grid-cols-[1fr_auto_1fr] items-stretch gap-6;
+  }
+
+  .comparison-vs {
+    @apply flex min-w-16 items-center justify-center font-mono text-[28px] font-bold uppercase text-post-accent;
+  }
+
+  .card-list {
+    @apply space-y-4 text-body font-medium leading-snug text-post-white;
+  }
+
+  .card-list-item {
+    @apply flex items-start gap-4;
+  }
+
+  .card-list-dot {
+    @apply mt-3 h-2.5 w-2.5 shrink-0 rounded-full bg-post-accent;
+  }
+
+  /* architecture / flow */
+  .flow-stack {
+    @apply flex w-full max-w-[760px] flex-col items-center;
+  }
+
+  .flow-node {
+    @apply w-full rounded-2xl border border-white/10 bg-post-card px-8 py-5 text-center font-mono text-body font-bold text-post-white;
+  }
+
+  .flow-node-accent {
+    @apply border-post-accent/50 bg-post-accent/[0.08];
+  }
+
+  .flow-arrow {
+    @apply my-3 flex justify-center text-post-accent;
+  }
+
+  .architecture-columns {
+    @apply grid w-full grid-cols-[1fr_auto_1fr] items-start gap-6;
+  }
+
+  .architecture-card {
+    @apply rounded-card border border-white/10 bg-post-card p-6 shadow-ios;
+  }
+
+  .architecture-card-title {
+    @apply mb-4 text-cardTitle text-post-white;
+  }
+
+  .architecture-row {
+    @apply rounded-xl border border-white/10 bg-post-quote px-5 py-3 text-center font-mono text-[21px] font-bold leading-tight text-post-white;
+  }
+
+  .architecture-arrow {
+    @apply my-2 flex justify-center text-post-accent;
+  }
+
+  .center-statement {
+    @apply rounded-card border border-post-accent/30 bg-post-accent/[0.06] p-7 text-center text-body font-semibold text-post-white shadow-ios-glow;
+  }
+
+  /* code */
+  .code-shell {
+    @apply w-full overflow-hidden rounded-card border border-white/10 bg-post-surface shadow-ios;
+  }
+
+  .code-header {
+    @apply flex items-center justify-between border-b border-white/10 bg-white/[0.03] px-6 py-4 font-mono text-footer text-post-gray;
+  }
+
+  .code-dots {
+    @apply flex items-center gap-2;
+  }
+
+  .code-dot {
+    @apply h-3 w-3 rounded-full;
+  }
+
+  .code-block {
+    @apply overflow-hidden p-7 font-mono text-[22px] leading-relaxed text-post-white;
+  }
+
+  .code-caption {
+    @apply border-t border-white/10 px-7 py-4 text-[19px] font-medium text-post-gray;
+  }
+
+  .code-block .token.keyword,
+  .code-block .token.builtin {
+    color: theme('colors.post.pink');
+  }
+
+  .code-block .token.operator {
+    color: theme('colors.post.teal');
+  }
+
+  .code-block .token.string,
+  .code-block .token.char {
+    color: theme('colors.post.mint');
+  }
+
+  .code-block .token.number,
+  .code-block .token.boolean {
+    color: theme('colors.post.orange');
+  }
+
+  .code-block .token.function,
+  .code-block .token.class-name {
+    color: theme('colors.post.teal');
+  }
+
+  .code-block .token.comment {
+    color: theme('colors.post.gray2');
+    font-style: italic;
+  }
+
+  .code-block .token.punctuation {
+    color: theme('colors.post.gray');
+  }
+
+  /* timeline */
+  .timeline-wrap {
+    @apply w-full max-w-[860px];
+  }
+
+  .timeline-line {
+    @apply relative space-y-5 pl-8;
+  }
+
+  .timeline-line::before {
+    content: '';
+    @apply absolute bottom-3 left-2 top-3 w-px bg-post-separator;
+  }
+
+  .timeline-dot {
+    @apply absolute -left-8 top-2 h-4 w-4 rounded-full border-4 border-post-canvas bg-post-accent;
+  }
+
+  .timeline-card {
+    @apply relative grid grid-cols-[140px_1fr] items-center gap-5 rounded-card border border-white/10 bg-post-card px-7 py-5 shadow-ios;
+  }
+
+  .timeline-time {
+    @apply font-mono text-[30px] font-bold leading-none text-post-accent;
+  }
+
+  .timeline-title {
+    @apply mb-1.5 text-[28px] font-semibold leading-tight text-post-white;
+  }
+
+  .timeline-body {
+    @apply text-[22px] font-medium leading-tight text-post-gray;
+  }
+
+  /* reflection */
+  .reflection-layout {
+    @apply w-full space-y-8 text-center;
+  }
+
+  .reflection-statement {
+    @apply mx-auto max-w-[880px] text-[44px] font-bold leading-tight text-post-white;
+  }
+
+  .reflection-points {
+    @apply flex flex-wrap justify-center gap-4;
+  }
+
+  .reflection-point {
+    @apply w-[292px] rounded-card border border-white/10 bg-post-card px-5 py-6 text-[22px] font-semibold leading-tight text-post-white shadow-ios;
+  }
+
+  .reflection-point-index {
+    @apply mb-3 font-mono text-[18px] font-bold text-post-accent;
+  }
+
+  /* before / after */
+  .before-after-layout {
+    @apply grid w-full grid-cols-[1fr_auto_1fr] items-stretch gap-6;
+  }
+
+  .transform-card {
+    @apply rounded-card border border-white/10 bg-post-card p-7 shadow-ios;
+  }
+
+  .transform-card-after {
+    @apply border-post-accent/40 bg-post-accent/[0.06];
+  }
+
+  .transform-card-title {
+    @apply mb-6 text-cardTitle font-semibold uppercase leading-tight tracking-[0.06em] text-post-white;
+  }
+
+  .transform-list {
+    @apply space-y-4 text-body font-medium leading-snug text-post-white;
+  }
+
+  .transform-list-item {
+    @apply flex items-start gap-4;
+  }
+
+  .transform-dot {
+    @apply mt-3 h-2.5 w-2.5 shrink-0 rounded-full bg-post-accent;
+  }
+
+  .transform-transition {
+    @apply flex min-w-32 flex-col items-center justify-center gap-3 font-mono text-badge font-bold uppercase leading-tight tracking-[0.08em] text-post-accent;
+  }
+
+  /* decision matrix */
+  .decision-layout {
+    @apply w-full space-y-5;
+  }
+
+  .decision-question {
+    @apply rounded-card border border-post-accent/30 bg-post-accent/[0.06] px-8 py-6 text-center text-body font-bold leading-tight text-post-white shadow-ios-glow;
+  }
+
+  .decision-options {
+    @apply grid w-full grid-cols-3 gap-4;
+  }
+
+  .decision-option-card {
+    @apply rounded-card border border-white/10 bg-post-card p-6 shadow-ios;
+  }
+
+  .decision-option-title {
+    @apply mb-4 text-[28px] font-semibold uppercase leading-tight tracking-normal text-post-white;
+  }
+
+  .decision-list-group {
+    @apply mt-4 first:mt-0;
+  }
+
+  .decision-list-label {
+    @apply mb-2 font-mono text-[16px] font-bold uppercase leading-tight tracking-[0.08em];
+  }
+
+  .decision-list-label-pros {
+    @apply text-post-mint;
+  }
+
+  .decision-list-label-cons {
+    @apply text-post-gray2;
+  }
+
+  .decision-list {
+    @apply space-y-2 text-[20px] font-medium leading-snug text-post-white;
+  }
+
+  .decision-list-item {
+    @apply flex items-start gap-2.5;
+  }
+
+  .decision-icon {
+    @apply mt-1 h-5 w-5 shrink-0;
+  }
+
+  .decision-final {
+    @apply rounded-card border border-post-accent/40 bg-post-accent/[0.06] px-8 py-6 text-center text-body font-bold leading-tight text-post-white shadow-ios-glow;
+  }
+
+  .decision-final-label {
+    @apply mb-2 block font-mono text-badge uppercase tracking-[0.1em] text-post-accent;
+  }
+
+  /* pyramid */
+  .pyramid-layout {
+    @apply flex w-full flex-col items-center justify-center gap-4;
+  }
+
+  .pyramid-level {
+    @apply rounded-card border border-white/10 bg-post-card px-8 py-5 text-center shadow-ios;
+  }
+
+  .pyramid-level-top {
+    @apply border-post-accent/50 bg-post-accent/[0.08];
+  }
+
+  .pyramid-title {
+    @apply text-[30px] font-bold leading-tight text-post-white;
+  }
+
+  .pyramid-description {
+    @apply mt-2 text-[21px] font-medium leading-tight text-post-gray;
+  }
+
+  /* checklist */
+  .checklist-layout {
+    @apply w-full max-w-[880px] space-y-5;
+  }
+
+  .checklist-heading {
+    @apply rounded-card border border-post-accent/30 bg-post-accent/[0.06] px-8 py-5 text-center text-body font-bold leading-tight text-post-white shadow-ios-glow;
+  }
+
+  .checklist-items {
+    @apply space-y-4;
+  }
+
+  .checklist-row {
+    @apply flex items-center gap-5 rounded-card border border-white/10 bg-post-card px-7 py-5 text-[27px] font-semibold leading-tight text-post-white shadow-ios;
+  }
+
+  .checklist-icon-wrap {
+    @apply flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-post-accent/15 text-post-accent;
+  }
+
+  /* metrics */
+  .metrics-layout {
+    @apply w-full space-y-5;
+  }
+
+  .metric-row {
+    @apply grid grid-cols-[1fr_1.2fr_auto_1.2fr] items-center gap-5 rounded-card border border-white/10 bg-post-card p-6 shadow-ios;
+  }
+
+  .metric-label {
+    @apply text-[28px] font-bold uppercase leading-tight tracking-normal text-post-white;
+  }
+
+  .metric-value {
+    @apply rounded-2xl border px-5 py-4;
+  }
+
+  .metric-value-before {
+    @apply border-white/10 bg-post-quote;
+  }
+
+  .metric-value-after {
+    @apply border-post-accent/40 bg-post-accent/[0.08];
+  }
+
+  .metric-value span {
+    @apply mb-2 block font-mono text-[15px] font-bold uppercase leading-none tracking-[0.08em];
+  }
+
+  .metric-value-before span {
+    @apply text-post-gray2;
+  }
+
+  .metric-value-after span {
+    @apply text-post-accent;
+  }
+
+  .metric-value strong {
+    @apply block text-[26px] font-bold leading-tight text-post-white;
+  }
+
+  .metric-arrow {
+    @apply h-8 w-8 text-post-accent;
+  }
+
+  /* quote hero */
+  .quote-hero-layout {
+    @apply w-full space-y-8 rounded-card border border-white/10 bg-post-card px-12 py-14 text-center shadow-ios;
+  }
+
+  .quote-hero-statement {
+    @apply mx-auto max-w-[840px] text-[46px] font-extrabold leading-tight tracking-tight text-post-white;
+  }
+
+  .quote-hero-support {
+    @apply mx-auto max-w-[760px] text-[26px] font-medium leading-snug text-post-gray;
+  }
+
+  .quote-hero-points {
+    @apply flex flex-wrap justify-center gap-4;
+  }
+
+  .quote-hero-point {
+    @apply rounded-full border border-post-accent/40 bg-post-accent/[0.08] px-6 py-3 font-mono text-badge font-bold uppercase tracking-[0.06em] text-post-white;
+  }
+
+  /* project hero */
+  .project-hero-layout {
+    @apply w-full space-y-5;
+  }
+
+  .project-hero-copy {
+    @apply flex flex-col justify-center rounded-card border border-white/10 bg-post-card p-8 shadow-ios;
+  }
+
+  .project-hero-description {
+    @apply mb-7 text-[28px] font-semibold leading-snug text-post-white;
+  }
+
+  .project-hero-label {
+    @apply mb-3 font-mono text-[16px] font-bold uppercase tracking-[0.1em] text-post-accent;
+  }
+
+  .project-hero-links {
+    @apply mt-7 flex flex-wrap gap-3;
+  }
+
+  .project-hero-link {
+    @apply inline-flex items-center gap-2 rounded-xl border border-post-accent/40 bg-post-accent/[0.08] px-4 py-3 font-mono text-[17px] font-bold uppercase tracking-[0.04em] text-post-white;
+  }
+
+  /* tech stack */
+  .tech-stack-layout {
+    @apply grid w-full grid-cols-2 gap-5;
+  }
+
+  .tech-stack-card {
+    @apply min-h-[184px] rounded-card border border-white/10 bg-post-card p-7 shadow-ios;
+  }
+
+  .tech-stack-card .card-title {
+    @apply mb-4 text-[26px] text-post-accent;
+  }
+
+  .tech-badges {
+    @apply flex flex-wrap gap-3;
+  }
+
+  .tech-badge {
+    @apply inline-flex items-center rounded-full border border-white/10 bg-post-elevated px-4 py-2 font-mono text-[18px] font-semibold text-post-white;
+  }
+
+  /* folder tree */
+  .folder-tree {
+    @apply w-full space-y-2 font-mono;
+  }
+
+  .folder-tree-node > .folder-tree {
+    @apply ml-6 mt-2 border-l border-post-separator pl-4;
+  }
+
+  .folder-tree-item {
+    @apply flex min-h-[44px] items-center gap-3 rounded-xl border border-transparent bg-post-quote px-4 py-2 text-[20px] font-bold leading-tight text-post-white;
+  }
+
+  .folder-tree-item-highlighted {
+    @apply border-post-accent/40 bg-post-accent/[0.08];
+  }
+
+  .folder-tree-icon {
+    @apply h-5 w-5 shrink-0 text-post-accent;
+  }
+
+  .folder-tree-name {
+    @apply min-w-0 break-words;
+  }
+
+  .folder-tree-note {
+    @apply ml-auto text-right text-[15px] font-medium text-post-gray2;
+  }
+
+  /* project overview */
+  .project-overview-layout {
+    @apply w-full space-y-5;
+  }
+
+  .project-overview-grid {
+    @apply grid grid-cols-[1.1fr_0.9fr_0.9fr] items-start gap-5;
+  }
+
+  .project-overview-card {
+    @apply min-h-[400px] rounded-card border border-white/10 bg-post-card p-6 shadow-ios;
+  }
+
+  .project-overview-card .card-title {
+    @apply mb-4 text-[24px] text-post-accent;
+  }
+
+  .project-overview-architecture .flow-node {
+    @apply px-4 py-3 text-[19px];
+  }
+
+  .project-overview-label {
+    @apply mb-3 block font-mono text-[15px] font-bold uppercase tracking-[0.08em] text-post-accent;
+  }
+
+  .overview-note-item {
+    @apply flex items-start gap-3 text-[20px] font-medium leading-snug text-post-white;
+  }
+
+  .overview-note-dot {
+    @apply mt-2.5 h-2 w-2 shrink-0 rounded-full bg-post-accent;
+  }
+}
