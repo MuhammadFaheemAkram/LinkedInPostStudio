@@ -1,46 +1,51 @@
 import { definePost } from '../../lib/factories';
 
-// 5/8 — The signature SpendWise decision: derive totals vs store them (decisionMatrix layout).
+// 5/8 — NEW concept: a business rule expressed as a pipeline. `flow` layout
+// (unused in projects 01 and 02).
 export default definePost({
-  title: 'WHERE DO TOTALS LIVE?',
-  highlightWord: 'TOTALS',
-  subtitle: 'The single decision that shaped the whole architecture.',
-  layout: 'decisionMatrix',
-  quote: 'Never store a number you can compute from the truth.',
+  title: 'HOW A BUDGET KNOWS',
+  highlightWord: 'KNOWS',
+  subtitle: 'A business rule is just a pipeline you can test one step at a time.',
+  layout: 'flow',
+  quote: 'A rule you can draw as a pipeline is a rule you can test.',
   layoutData: {
-    question: 'Where should the dashboard total and budget progress be calculated?',
-    options: [
-      { title: 'Stored', pros: ['Fast to read'], cons: ['Goes stale', 'Two sources of truth', 'A bug on every edit'] },
-      { title: 'In the View', pros: ['Simple at first'], cons: ['Logic leaks into UI', 'Impossible to test'] },
-      { title: 'Use Case', pros: ['One place for the rule', 'Always in sync', 'Easy to test'], cons: ['Recomputed on change'] },
+    steps: [
+      { label: 'All Transactions', detail: 'the stored truth' },
+      { label: 'Filter: category + month', detail: 'yyyy-MM key' },
+      { label: 'Sum expenses', detail: 'exact Decimal arithmetic' },
+      { label: 'Compare to limit', detail: 'spent ÷ limit' },
+      { label: 'safe · warning · over', detail: 'the state the UI renders' },
     ],
-    decision: 'Derive totals in use cases from SwiftData. Transactions are the truth; every figure is computed from them.',
   },
-  linkedInCaption: `🧮 SpendWise — Where Should Totals Live?
+  linkedInCaption: `📊 SpendWise — How a Budget Knows It's Over
 
-Here's a decision that shaped SpendWise more than any feature:
+"You're over budget on Food this month."
 
-Where do you calculate the dashboard total and budget progress?
+Sounds like a feature. It's really a business rule — and writing it as a pipeline made it obvious and testable.
 
-I weighed three options:
+The rule, step by step:
 
-→ Store the totals → fast to read, but they go stale the moment a transaction changes. Now you have two sources of truth and a bug on every edit.
+1. Start with all transactions — the stored truth.
+2. Filter to one category, in one month (stored as a simple "yyyy-MM" key).
+3. Sum the expenses, using exact Decimal arithmetic.
+4. Compare that sum to the budget's limit.
+5. Produce a state: safe, warning, or over budget.
 
-→ Calculate in the view → simple at first, but business logic leaks into the UI and becomes impossible to test.
+Every step is a pure transformation. Nothing is stored along the way, and nothing depends on the UI.
 
-→ Calculate in a use case → one place for the rule, always in sync, and trivial to unit test. The only cost is recomputing on change — which is cheap.
+Two things I liked about modelling it this way:
 
-The decision: derive totals in use cases from SwiftData. Never store a number you can compute.
+→ The output is a state, not a boolean. The UI doesn't compute anything or decide what "close to the limit" means — it just renders safe, warning, or over. All the judgement lives in one place.
 
-This is the single-source-of-truth principle applied to money: transactions are the truth, and every figure the user sees is derived from them.
+→ Each step is independently testable. Wrong total? Test the sum. Wrong month? Test the filter. You're never debugging "the budget screen" — you're debugging one function.
 
-It made the app more correct AND easier to test.
+The wider lesson: when a rule feels complicated, try drawing it as a pipeline. Most business logic is a sequence of small transformations wearing a scary name.
 
-Next post: turning those numbers into insight with Swift Charts.
+Next post: turning all these numbers into something you can actually read.
 
 Open source — GitHub link in the comments.
 
-Do you store computed values or derive them? 👇
+How do you keep business rules out of your UI? 👇
 
-#iOSDevelopment #SwiftUI #Swift #MVVM #SwiftData #SoftwareArchitecture #CleanArchitecture #OpenSource #LearningInPublic`,
+#iOSDevelopment #Swift #SwiftUI #SoftwareArchitecture #DomainModeling #CleanArchitecture #OpenSource #MobileDevelopment #iOSDeveloper #LearningInPublic`,
 });

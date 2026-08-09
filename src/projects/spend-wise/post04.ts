@@ -1,57 +1,53 @@
 import { definePost } from '../../lib/factories';
 
-// 4/8 — Data flow overview: layers + pipeline + the "derive, don't store" rule.
+// 4/8 — The signature SpendWise decision. decisionMatrix layout (unused in
+// projects 01 and 02, so the series stays visually fresh too).
 export default definePost({
-  title: 'DATA FLOW',
-  highlightWord: 'FLOW',
-  subtitle: 'In a finance app, every number has to be predictable.',
-  layout: 'projectOverview',
-  quote: 'The safest number is the one you never store twice.',
+  title: 'WHERE DO TOTALS LIVE?',
+  highlightWord: 'TOTALS',
+  subtitle: 'One decision that removed a whole category of bugs.',
+  layout: 'decisionMatrix',
+  quote: 'Never store a number you can compute from the truth.',
   layoutData: {
-    folderTree: [
+    question: 'Where should the dashboard total and budget progress be calculated?',
+    options: [
       {
-        name: 'Feature',
-        highlighted: true,
-        children: [{ name: 'Dashboard' }, { name: 'Transactions' }, { name: 'Reports' }],
+        title: 'Stored',
+        pros: ['Fast to read'],
+        cons: ['Goes stale', 'Two sources of truth', 'Every edit path must remember'],
       },
+      { title: 'In the View', pros: ['Quickest to write'], cons: ['Logic leaks into UI', 'Cannot be unit tested'] },
+      { title: 'Use Case', pros: ['One home for the rule', 'Always in sync', 'Pure and testable'], cons: ['Recomputed on change'] },
     ],
-    architectureNodes: ['SwiftUI View', '@Observable ViewModel', 'Use Case', 'Repository', 'SwiftData'],
-    techSummary: ['SwiftUI', '@Observable', 'MVVM', 'Use Cases', 'SwiftData', 'Swift Charts'],
-    notes: [
-      'Views render state, forward intents',
-      'Use cases hold the money rules',
-      'Totals are derived, never stored',
-    ],
+    decision: 'Derive in use cases from SwiftData. Transactions are the truth; every figure is computed from them.',
   },
-  linkedInCaption: `🔄 SpendWise — Understanding the Data Flow
+  linkedInCaption: `🧮 SpendWise — Where Should Totals Live?
 
-In a finance app, one wrong number breaks trust instantly. So I made the flow of data completely predictable.
+This is the decision that shaped SpendWise more than any feature.
 
-Every interaction follows the same path:
+Where do you calculate the dashboard balance, the budget progress, the monthly report?
 
-SwiftUI View → @Observable ViewModel → Use Case → Repository → SwiftData
+Three honest options:
 
-Each layer owns one job:
+→ Store the totals. Fast to read. But the moment a transaction is edited or deleted, the stored total is wrong. Now you have two sources of truth, and every single edit path has to remember to update it. Miss one, and the number is wrong forever.
 
-→ The view renders state and forwards user intent.
-→ The view model manages screen state (@Observable, @MainActor).
-→ Use cases hold the business rules — the money math.
-→ The repository coordinates data access.
-→ SwiftData stores the transactions — the single source of truth.
+→ Calculate in the view. Quickest to write. But business logic ends up inside SwiftUI, where it can't be unit tested and gets duplicated the moment a second screen needs the same figure.
 
-The key decision: the dashboard total, spending-by-category, and budget progress are never stored. They're derived from transactions by use cases, every time.
+→ Calculate in a use case. One home for the rule. Always in sync, because it reads the transactions every time. Pure input → output, so it's trivial to test.
 
-Why:
+I went with use cases. The cost is recomputing on change — which, for a personal finance app's data volumes, is nothing.
 
-→ The numbers can never drift out of sync.
-→ Editing a transaction updates everything automatically.
-→ Each calculation is a small, testable unit.
+The payoff is that an entire class of bug simply cannot happen. There is no such thing as a stale total, because there is no stored total.
 
-Next post: where those totals should actually be calculated — and why "store the total" is a trap.
+This is the single-source-of-truth principle applied to arithmetic: transactions are the truth, and everything the user sees is derived from them.
+
+It also made the app dramatically easier to test — which is the next post, in a way, because a derived figure is just a function.
+
+Next: how a budget actually knows it's over.
 
 Open source — GitHub link in the comments.
 
-How do you keep derived data in sync? 👇
+Do you store computed values or derive them? 👇
 
-#iOSDevelopment #SwiftUI #Swift #MVVM #SwiftData #SoftwareArchitecture #OpenSource #MobileDevelopment #LearningInPublic`,
+#iOSDevelopment #Swift #SwiftData #SoftwareArchitecture #CleanArchitecture #DomainModeling #OpenSource #MobileDevelopment #iOSDeveloper #LearningInPublic`,
 });

@@ -1,68 +1,66 @@
 import { definePost } from '../../lib/factories';
 
-// 3/8 — Feature-first folder structure (matches the real SpendWise/ tree).
+// 3/8 — NEW concept: domain modeling. Uses the new `dataModel` layout.
 export default definePost({
-  title: 'PROJECT STRUCTURE',
-  highlightWord: 'STRUCTURE',
-  subtitle: 'A clear structure keeps a detail-heavy finance app easy to navigate.',
-  layout: 'folderTree',
-  quote: 'A project structure should explain ownership before you open a file.',
+  title: 'MODELING THE DOMAIN',
+  highlightWord: 'DOMAIN',
+  subtitle: 'Four entities, and the rules that decide how they relate.',
+  layout: 'dataModel',
+  quote: 'Model the nouns wrong and every feature after it pays interest.',
   layoutData: {
-    roots: [
+    entities: [
       {
-        name: 'SpendWise',
-        highlighted: true,
-        children: [
-          { name: 'App', note: 'Root · Navigation' },
-          { name: 'Core', note: 'DesignSystem · Networking · Persistence · Storage' },
-          { name: 'Domain', note: 'Model · Repository · UseCase' },
-          { name: 'Data', note: 'Mapper · Repository' },
-          {
-            name: 'Feature',
-            highlighted: true,
-            children: [
-              { name: 'Dashboard' },
-              { name: 'Transactions' },
-              { name: 'Budgets' },
-              { name: 'Reports' },
-              { name: 'Recurring' },
-              { name: 'Settings' },
-            ],
-          },
-          { name: 'DI', note: 'AppEnvironment' },
-        ],
+        name: 'Transaction',
+        primary: true,
+        fields: ['id: UUID', 'amount: Money', 'type: income|expense', 'categoryId', 'accountId', 'date: Date'],
       },
+      { name: 'Category', fields: ['id: UUID', 'name: String', 'type', 'icon + color'] },
+      { name: 'Account', fields: ['id: UUID', 'name: String', 'type: cash|bank|wallet'] },
+      { name: 'Budget', fields: ['id: UUID', 'categoryId', 'month: "yyyy-MM"', 'limit: Money'] },
+    ],
+    relations: [
+      { from: 'Transaction', to: 'Category', label: 'belongs to' },
+      { from: 'Transaction', to: 'Account', label: 'posted to' },
+      { from: 'Budget', to: 'Category', label: 'one per month' },
+    ],
+    rules: [
+      'A category or account cannot be deleted while a transaction still references it',
+      'Account balance is derived from its transactions — never a stored field',
+      'A budget stores only its limit; what was spent is computed from the month',
     ],
   },
-  linkedInCaption: `📁 SpendWise — Organizing a Finance App
+  linkedInCaption: `🧩 SpendWise — Modeling the Domain
 
-A finance app has a lot of moving parts — transactions, budgets, categories, accounts, reports, recurring payments.
+Before writing a single screen, I spent time on a question that sounds boring and turns out to decide everything:
 
-Without structure, that turns into chaos fast.
+What are the nouns, and how do they relate?
 
-So SpendWise separates responsibilities into clear layers:
+SpendWise came down to four:
 
-→ App → root and navigation setup.
-→ Core → design system, networking, persistence, storage.
-→ Domain → models, repository protocols, and use cases (the money rules).
-→ Data → mappers and repository implementations.
-→ Feature → self-contained screens (Dashboard, Transactions, Budgets, Reports…).
-→ DI → the AppEnvironment composition root.
+→ Transaction — an amount, a type (income or expense), a date, and references to a category and an account.
+→ Category — Food, Bills, Salary… with an icon and colour.
+→ Account — cash, bank, or wallet.
+→ Budget — a limit for one category, in one month.
 
-Why it helps:
+The relationships are simple. The rules between them are where the engineering lives:
 
-→ Every feature has a predictable home.
-→ Business rules live in the domain, not the UI.
-→ New features slot in without touching unrelated code.
-→ The math is isolated, so it's easy to test.
+→ You cannot delete a category or account that transactions still reference. Deleting it would orphan real records, so the app blocks it instead of silently corrupting history.
 
-For a domain as detail-heavy as personal finance, a consistent structure is what keeps it maintainable.
+→ An account's balance is not a stored field. It's derived from that account's transactions. If it were stored, every edit would need to remember to update it — and one missed path means a wrong balance forever.
 
-Next post: how data flows through the app, from the view down to SwiftData.
+→ A budget stores only its limit. What you've spent is computed from the month's transactions.
+
+Notice the pattern: anything that can be computed from the transactions is computed. The stored model is deliberately small.
+
+That single principle removed an entire category of "these two numbers disagree" bugs — the kind that are miserable to reproduce.
+
+A good domain model doesn't just describe the data. It makes the wrong state impossible to represent.
+
+Next post: where those derived figures should actually be calculated.
 
 Open source — GitHub link in the comments.
 
-Feature-first or layer-first — how do you organize? 👇
+How do you decide what to store vs compute? 👇
 
-#iOSDevelopment #SwiftUI #Swift #MVVM #CleanArchitecture #SoftwareArchitecture #SwiftData #OpenSource #LearningInPublic`,
+#iOSDevelopment #Swift #SwiftData #DomainModeling #SoftwareArchitecture #CleanArchitecture #OpenSource #MobileDevelopment #iOSDeveloper #LearningInPublic`,
 });

@@ -183,6 +183,69 @@ export function createDefaultLayoutData(layout: PostLayout): AnyLayoutData {
         techSummary: ['SwiftUI', 'MVVM', 'async/await', 'Repository', 'DI', 'SwiftData'],
         notes: ['Views only observe state', 'Repository coordinates data', 'Logic stays out of views'],
       };
+    case 'pitfall':
+      return {
+        trap: { title: 'Money as Double', body: 'Storing currency in a binary floating-point type.' },
+        consequence: {
+          title: 'Rounding drift',
+          body: '0.1 + 0.2 never equals 0.3, and the error compounds across every total.',
+        },
+        fix: {
+          title: 'Decimal + a Money type',
+          body: 'Exact base-10 arithmetic behind one value type that carries its currency.',
+        },
+        note: 'The compiler will not catch this one. The domain model has to.',
+      };
+    case 'dataModel':
+      return {
+        entities: [
+          { name: 'Transaction', primary: true, fields: ['id: UUID', 'amount: Money', 'categoryId', 'accountId'] },
+          { name: 'Category', fields: ['id: UUID', 'name: String', 'type'] },
+          { name: 'Account', fields: ['id: UUID', 'name: String', 'type'] },
+        ],
+        relations: [
+          { from: 'Transaction', to: 'Category' },
+          { from: 'Transaction', to: 'Account' },
+        ],
+        rules: ['A category cannot be deleted while in use', 'Balances are derived, never stored'],
+      };
+    case 'chartShowcase':
+      return {
+        panels: [
+          {
+            kind: 'bar',
+            title: 'Income vs Expense',
+            unit: '$',
+            points: [
+              { label: 'Income', value: 4200 },
+              { label: 'Expense', value: 2850 },
+            ],
+          },
+          {
+            kind: 'donut',
+            title: 'By Category',
+            unit: '$',
+            points: [
+              { label: 'Food', value: 940 },
+              { label: 'Bills', value: 720 },
+              { label: 'Transport', value: 610 },
+              { label: 'Other', value: 580 },
+            ],
+          },
+          {
+            kind: 'line',
+            title: 'Spending Trend',
+            unit: '$',
+            points: [
+              { label: 'Jan', value: 2400 },
+              { label: 'Feb', value: 2750 },
+              { label: 'Mar', value: 2300 },
+              { label: 'Apr', value: 2850 },
+            ],
+          },
+        ],
+        note: 'Every figure is computed from the same stored transactions.',
+      };
     default:
       return layout satisfies never;
   }

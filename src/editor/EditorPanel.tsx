@@ -5,6 +5,13 @@ import type {
   AnyLayoutData,
   ArchitectureLayoutData,
   BeforeAfterLayoutData,
+  ChartKind,
+  ChartPanel,
+  ChartShowcaseLayoutData,
+  DataModelEntity,
+  DataModelLayoutData,
+  DataModelRelation,
+  PitfallLayoutData,
   ChecklistLayoutData,
   CodeLayoutData,
   ComparisonLayoutData,
@@ -122,6 +129,65 @@ function parseCategories(value: string): TechStackLayoutData['categories'] {
 
 function formatCategories(categories: TechStackLayoutData['categories']) {
   return categories.map((category) => `${category.title} | ${category.technologies.join(', ')}`).join('\n');
+}
+
+/** Entities: `Name * | field, field` — a trailing `*` on the name marks the primary entity. */
+function parseEntities(value: string): DataModelEntity[] {
+  return textToLines(value).map((line) => {
+    const [rawName = '', fields = ''] = line.split('|').map((part) => part.trim());
+    const primary = rawName.endsWith('*');
+    return {
+      name: primary ? rawName.slice(0, -1).trim() : rawName,
+      fields: splitListCell(fields),
+      ...(primary ? { primary: true } : {}),
+    };
+  });
+}
+
+function formatEntities(entities: DataModelEntity[]) {
+  return entities
+    .map((entity) => `${entity.name}${entity.primary ? ' *' : ''} | ${entity.fields.join(', ')}`)
+    .join('\n');
+}
+
+/** Relations: `From > To | label` */
+function parseRelations(value: string): DataModelRelation[] {
+  return textToLines(value).map((line) => {
+    const [pair = '', label = ''] = line.split('|').map((part) => part.trim());
+    const [from = '', to = ''] = pair.split('>').map((part) => part.trim());
+    return { from, to, ...(label ? { label } : {}) };
+  });
+}
+
+function formatRelations(relations: DataModelRelation[]) {
+  return relations.map((r) => `${r.from} > ${r.to}${r.label ? ` | ${r.label}` : ''}`).join('\n');
+}
+
+/** Panels: `kind | title | unit | label:value, label:value` */
+function parsePanels(value: string): ChartPanel[] {
+  return textToLines(value).map((line) => {
+    const [kind = 'bar', title = '', unit = '', points = ''] = line.split('|').map((part) => part.trim());
+    return {
+      kind: (['bar', 'donut', 'line'].includes(kind) ? kind : 'bar') as ChartKind,
+      title,
+      ...(unit ? { unit } : {}),
+      points: splitListCell(points).map((entry) => {
+        const [label = '', raw = ''] = entry.split(':').map((part) => part.trim());
+        return { label, value: Number(raw) || 0 };
+      }),
+    };
+  });
+}
+
+function formatPanels(panels: ChartPanel[]) {
+  return panels
+    .map(
+      (panel) =>
+        `${panel.kind} | ${panel.title} | ${panel.unit ?? ''} | ${panel.points
+          .map((point) => `${point.label}:${point.value}`)
+          .join(', ')}`,
+    )
+    .join('\n');
 }
 
 /** Indentation tree: 2 spaces per level, trailing `*` = highlighted, ` // note`. */
@@ -652,6 +718,94 @@ function LayoutDataFields({
               className="editor-input editor-textarea"
               value={linesToText(data.notes)}
               onChange={(event) => onChange({ ...data, notes: textToLines(event.target.value) })}
+            />
+          </Field>
+        </>
+      );
+    }
+
+    case 'pitfall': {
+      const data: PitfallLayoutData = post.layoutData;
+      const stage = (key: 'trap' | 'consequence' | 'fix', label: string) => (
+        <>
+          <Field label={`${label} title`}>
+            <input
+              className="editor-input"
+              value={data[key].title}
+              onChange={(event) => onChange({ ...data, [key]: { ...data[key], title: event.target.value } })}
+            />
+          </Field>
+          <Field label={`${label} body`}>
+            <textarea
+              className="editor-input editor-textarea"
+              value={data[key].body}
+              onChange={(event) => onChange({ ...data, [key]: { ...data[key], body: event.target.value } })}
+            />
+          </Field>
+        </>
+      );
+
+      return (
+        <>
+          {stage('trap', 'Trap')}
+          {stage('consequence', 'Consequence')}
+          {stage('fix', 'Fix')}
+          <Field label="Note">
+            <textarea
+              className="editor-input editor-textarea"
+              value={data.note ?? ''}
+              onChange={(event) => onChange({ ...data, note: event.target.value })}
+            />
+          </Field>
+        </>
+      );
+    }
+
+    case 'dataModel': {
+      const data: DataModelLayoutData = post.layoutData;
+      return (
+        <>
+          <Field label="Entities" hint="One per line — Name * | field, field   (* marks the primary entity)">
+            <textarea
+              className="editor-input min-h-44 resize-y font-mono"
+              value={formatEntities(data.entities)}
+              onChange={(event) => onChange({ ...data, entities: parseEntities(event.target.value) })}
+            />
+          </Field>
+          <Field label="Relations" hint="One per line — From > To | label">
+            <textarea
+              className="editor-input editor-textarea font-mono"
+              value={formatRelations(data.relations ?? [])}
+              onChange={(event) => onChange({ ...data, relations: parseRelations(event.target.value) })}
+            />
+          </Field>
+          <Field label="Rules" hint="One per line.">
+            <textarea
+              className="editor-input editor-textarea"
+              value={linesToText(data.rules ?? [])}
+              onChange={(event) => onChange({ ...data, rules: textToLines(event.target.value) })}
+            />
+          </Field>
+        </>
+      );
+    }
+
+    case 'chartShowcase': {
+      const data: ChartShowcaseLayoutData = post.layoutData;
+      return (
+        <>
+          <Field label="Panels" hint="One per line — bar|donut|line | title | unit | label:value, label:value">
+            <textarea
+              className="editor-input min-h-44 resize-y font-mono"
+              value={formatPanels(data.panels)}
+              onChange={(event) => onChange({ ...data, panels: parsePanels(event.target.value) })}
+            />
+          </Field>
+          <Field label="Note">
+            <textarea
+              className="editor-input editor-textarea"
+              value={data.note ?? ''}
+              onChange={(event) => onChange({ ...data, note: event.target.value })}
             />
           </Field>
         </>

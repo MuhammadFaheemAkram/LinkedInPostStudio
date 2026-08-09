@@ -17,7 +17,10 @@ export type PostLayout =
   | 'projectHero'
   | 'techStack'
   | 'folderTree'
-  | 'projectOverview';
+  | 'projectOverview'
+  | 'pitfall'
+  | 'dataModel'
+  | 'chartShowcase';
 
 /** Languages Prism is configured to highlight. */
 export type SupportedLanguage = 'swift' | 'kotlin' | 'java' | 'dart' | 'typescript';
@@ -169,6 +172,72 @@ export interface ProjectOverviewLayoutData {
   notes: string[];
 }
 
+/** One stage of a pitfall story (trap → consequence → fix). */
+export interface PitfallStage {
+  title: string;
+  body: string;
+}
+
+/**
+ * "The trap / why it breaks / the fix" — for the gotcha every project has.
+ * The fix stage carries the accent; the trap is marked with a warning tone.
+ */
+export interface PitfallLayoutData {
+  trap: PitfallStage;
+  consequence: PitfallStage;
+  fix: PitfallStage;
+  note?: string;
+}
+
+export interface DataModelEntity {
+  name: string;
+  /** Field lines, rendered in mono, e.g. "amount: Money". */
+  fields: string[];
+  /** Highlights this entity as the centre of the model. */
+  primary?: boolean;
+}
+
+export interface DataModelRelation {
+  from: string;
+  to: string;
+  label?: string;
+}
+
+/** Entity cards + relationships + the rules that govern them. */
+export interface DataModelLayoutData {
+  entities: DataModelEntity[];
+  relations?: DataModelRelation[];
+  rules?: string[];
+}
+
+export type ChartKind = 'bar' | 'donut' | 'line';
+
+export interface ChartPoint {
+  label: string;
+  value: number;
+}
+
+export interface ChartPanel {
+  kind: ChartKind;
+  title: string;
+  caption?: string;
+  /** Prefix shown before values, e.g. "$". */
+  unit?: string;
+  points: ChartPoint[];
+}
+
+/**
+ * Small multiples of static charts (bar / donut / line).
+ *
+ * Series colours come from a CVD-validated categorical order (see
+ * `CHART_SERIES_COLORS` in ChartShowcaseLayout) and every series is
+ * direct-labelled, so identity is never carried by colour alone.
+ */
+export interface ChartShowcaseLayoutData {
+  panels: ChartPanel[];
+  note?: string;
+}
+
 /** Union of every layout's data shape (used for editor defaults). */
 export type AnyLayoutData =
   | ComparisonLayoutData
@@ -186,7 +255,10 @@ export type AnyLayoutData =
   | ProjectHeroLayoutData
   | TechStackLayoutData
   | FolderTreeLayoutData
-  | ProjectOverviewLayoutData;
+  | ProjectOverviewLayoutData
+  | PitfallLayoutData
+  | DataModelLayoutData
+  | ChartShowcaseLayoutData;
 
 /* ------------------------------------------------------------------ post model */
 
@@ -226,7 +298,10 @@ export type PostContent =
   | BasePost<'projectHero', ProjectHeroLayoutData>
   | BasePost<'techStack', TechStackLayoutData>
   | BasePost<'folderTree', FolderTreeLayoutData>
-  | BasePost<'projectOverview', ProjectOverviewLayoutData>;
+  | BasePost<'projectOverview', ProjectOverviewLayoutData>
+  | BasePost<'pitfall', PitfallLayoutData>
+  | BasePost<'dataModel', DataModelLayoutData>
+  | BasePost<'chartShowcase', ChartShowcaseLayoutData>;
 
 /**
  * What a post file authors. Just the content — the post's number is derived

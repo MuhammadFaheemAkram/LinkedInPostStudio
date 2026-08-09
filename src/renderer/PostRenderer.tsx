@@ -5,7 +5,10 @@ import { QuoteCard } from '../components/QuoteCard';
 import { Title } from '../components/Title';
 import { ArchitectureLayout } from '../layouts/ArchitectureLayout';
 import { BeforeAfterLayout } from '../layouts/BeforeAfterLayout';
+import { ChartShowcaseLayout } from '../layouts/ChartShowcaseLayout';
 import { ChecklistLayout } from '../layouts/ChecklistLayout';
+import { DataModelLayout } from '../layouts/DataModelLayout';
+import { PitfallLayout } from '../layouts/PitfallLayout';
 import { CodeLayout } from '../layouts/CodeLayout';
 import { ComparisonLayout } from '../layouts/ComparisonLayout';
 import { DecisionMatrixLayout } from '../layouts/DecisionMatrixLayout';
@@ -59,6 +62,12 @@ function renderLayout(post: RenderablePost) {
       return <FolderTreeLayout data={post.layoutData} />;
     case 'projectOverview':
       return <ProjectOverviewLayout data={post.layoutData} />;
+    case 'pitfall':
+      return <PitfallLayout data={post.layoutData} />;
+    case 'dataModel':
+      return <DataModelLayout data={post.layoutData} />;
+    case 'chartShowcase':
+      return <ChartShowcaseLayout data={post.layoutData} />;
     default:
       return post satisfies never;
   }

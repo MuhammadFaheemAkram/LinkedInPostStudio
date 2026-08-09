@@ -779,4 +779,180 @@
   .overview-note-dot {
     @apply mt-2.5 h-2 w-2 shrink-0 rounded-full bg-post-accent;
   }
+
+  /* ------------------------------------------------------------- pitfall */
+  .pitfall-layout {
+    @apply w-full space-y-6;
+  }
+
+  .pitfall-stages {
+    @apply grid grid-cols-3 items-stretch gap-5;
+  }
+
+  .pitfall-card {
+    @apply rounded-card border border-white/10 bg-post-card p-7 shadow-ios;
+  }
+
+  .pitfall-card-trap {
+    @apply border-post-red/40 bg-post-red/[0.06];
+  }
+
+  .pitfall-card-fix {
+    @apply border-post-accent/40 bg-post-accent/[0.07];
+  }
+
+  .pitfall-label {
+    @apply mb-4 flex items-center gap-2 font-mono text-[16px] font-bold uppercase tracking-[0.12em] text-post-gray;
+  }
+
+  .pitfall-card-trap .pitfall-label {
+    @apply text-post-red;
+  }
+
+  .pitfall-card-fix .pitfall-label {
+    @apply text-post-accent;
+  }
+
+  .pitfall-title {
+    @apply mb-3 text-[27px] font-bold leading-tight text-post-white;
+  }
+
+  .pitfall-body {
+    @apply text-[21px] font-medium leading-snug text-post-gray;
+  }
+
+  .pitfall-note {
+    @apply rounded-card border border-white/10 bg-post-quote px-8 py-6 text-center text-body font-semibold text-post-white;
+  }
+
+  /* ---------------------------------------------------------- data model */
+  .data-model-layout {
+    @apply w-full space-y-5;
+  }
+
+  .data-model-entities {
+    @apply grid items-start gap-4;
+  }
+
+  .entity-card {
+    @apply overflow-hidden rounded-card border border-white/10 bg-post-card shadow-ios;
+  }
+
+  .entity-card-primary {
+    @apply border-post-accent/40 bg-post-accent/[0.06];
+  }
+
+  .entity-name {
+    @apply border-b border-white/10 bg-white/[0.03] px-5 py-3 font-mono text-[21px] font-bold text-post-white;
+  }
+
+  .entity-card-primary .entity-name {
+    @apply border-post-accent/20 bg-post-accent/10 text-post-accent;
+  }
+
+  .entity-fields {
+    @apply space-y-2 px-5 py-4 font-mono text-[17px] font-medium leading-tight text-post-gray;
+  }
+
+  .data-model-relations {
+    @apply flex flex-wrap justify-center gap-3;
+  }
+
+  .relation-pill {
+    @apply inline-flex items-center gap-2 rounded-full border border-white/10 bg-post-quote px-5 py-2.5 font-mono text-[17px] font-semibold text-post-white;
+  }
+
+  .relation-label {
+    @apply ml-1 text-[15px] font-medium text-post-gray2;
+  }
+
+  .data-model-rules {
+    @apply space-y-3 rounded-card border border-white/10 bg-post-quote px-8 py-6;
+  }
+
+  /* ------------------------------------------------------ chart showcase */
+  .chart-showcase-layout {
+    @apply w-full space-y-5;
+  }
+
+  .chart-panels {
+    @apply grid items-stretch gap-5;
+  }
+
+  .chart-panel {
+    @apply flex flex-col rounded-card border border-white/10 bg-post-card p-6 shadow-ios;
+  }
+
+  /* Push captions to a common baseline so panels read as one row. */
+  .chart-panel-caption {
+    @apply mt-auto pt-4;
+  }
+
+  .chart-panel-title {
+    @apply mb-4 text-[22px] font-semibold leading-tight text-post-white;
+  }
+
+  .chart-panel-caption {
+    @apply text-[17px] font-medium leading-snug text-post-gray;
+  }
+
+  .chart-svg {
+    @apply h-[150px] w-full;
+  }
+
+  /* Recessive axis — present, never competing with the data. */
+  .chart-axis {
+    stroke: rgba(255, 255, 255, 0.14);
+    stroke-width: 1.5;
+  }
+
+  .chart-value {
+    fill: theme('colors.post.white');
+    font-family: theme('fontFamily.mono');
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .chart-tick {
+    fill: theme('colors.post.gray2');
+    font-family: theme('fontFamily.mono');
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .donut-wrap {
+    @apply flex flex-col items-center gap-4;
+  }
+
+  .donut-svg {
+    @apply h-[150px] w-[150px];
+  }
+
+  .donut-legend {
+    @apply w-full space-y-2;
+  }
+
+  .donut-legend li {
+    @apply flex items-center gap-2.5 text-[17px] font-medium leading-none text-post-white;
+  }
+
+  .legend-swatch {
+    @apply h-3 w-3 shrink-0 rounded-[3px];
+  }
+
+  .legend-name {
+    @apply min-w-0 flex-1 truncate;
+  }
+
+  .legend-value {
+    @apply shrink-0 font-mono text-[16px] font-bold text-post-gray;
+  }
+
+  .chart-inline-legend {
+    @apply mt-4 flex flex-wrap justify-center gap-x-5 gap-y-2;
+  }
+
+  .chart-inline-legend li {
+    @apply flex items-center gap-2 text-[17px] font-medium leading-none text-post-white;
+  }
 }

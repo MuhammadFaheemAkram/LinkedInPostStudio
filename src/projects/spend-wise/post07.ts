@@ -1,47 +1,66 @@
 import { definePost } from '../../lib/factories';
 
-// 7/8 — Testing the money math (checklist).
+// 7/8 — NEW concept: recurring / scheduled work. `timeline` layout (unused in
+// projects 01 and 02). Grounded in the real RecurringTransaction design:
+// occurrences are previewed, never auto-posted.
 export default definePost({
-  title: 'TESTING THE APP',
-  highlightWord: 'TESTING',
-  subtitle: 'In a finance app, the math has to be right — so it has to be tested.',
-  layout: 'checklist',
-  quote: 'Clean layers turn business logic into unit tests.',
+  title: 'MONEY THAT REPEATS',
+  highlightWord: 'REPEATS',
+  subtitle: 'A recurring transaction is a template — not a transaction.',
+  layout: 'timeline',
+  quote: 'A prediction should never be allowed to masquerade as a fact.',
   layoutData: {
-    heading: 'What I cover with Swift Testing:',
-    items: [
-      'Transaction rules — add, edit, validate',
-      'Dashboard & budget calculations',
-      'Report math — income vs expense, by category',
-      'Filtering & sorting',
-      'SwiftData store — in-memory container',
+    events: [
+      {
+        time: 'Template',
+        title: 'Rent · $1,200 · monthly',
+        body: 'Stored once. It describes intent, not something that happened.',
+      },
+      {
+        time: 'Preview',
+        title: 'Upcoming occurrences, computed',
+        body: 'Next dates are derived from startDate + frequency — never written to the store.',
+      },
+      {
+        time: 'Reminder',
+        title: 'A local notification, not a write',
+        body: 'UNUserNotificationCenter nudges you; you decide whether it really happened.',
+      },
+      {
+        time: 'Actual',
+        title: 'You confirm — now it is a Transaction',
+        body: 'Only confirmed money reaches the store, so totals stay factual.',
+      },
     ],
   },
-  linkedInCaption: `🧪 SpendWise — Testing the Math
+  linkedInCaption: `🔁 SpendWise — Money That Repeats
 
-In most apps, a bug is annoying. In a finance app, a wrong number breaks trust.
+Rent, salary, subscriptions. Most of your money is predictable, so a finance app has to handle recurring transactions.
 
-So testing wasn't optional here — and clean architecture made it straightforward.
+The obvious implementation: on the 1st of each month, automatically insert a transaction.
 
-What I cover with Swift Testing (and protocol fakes):
+I deliberately didn't do that — and the reason turned out to be the most interesting design decision in the app.
 
-→ Transaction rules — add, edit, and validation.
-→ Dashboard & budget calculations.
-→ Report math — income vs expense, spending by category.
-→ Filtering and sorting.
-→ SwiftData store — using an in-memory container.
+The problem: if the app auto-posts, it's asserting something happened that it cannot actually know. Did the rent clear? Did the subscription get cancelled? Was the salary the same this month?
 
-Because the money logic lives in use cases (not the UI), each rule is a small, pure function that's easy to verify.
+Auto-posting means your "actual spending" quietly fills up with predictions. And once a prediction is stored next to a fact, nothing downstream can tell them apart. Your totals, budgets, and reports are all computed from that data.
 
-That's the real payoff of deriving figures instead of storing them: every calculation becomes a unit test instead of a mystery.
+So in SpendWise, a recurring transaction is a template, not a transaction:
 
-For me, testing a finance app isn't about coverage numbers. It's about trusting that the totals are correct after every change.
+→ The template is stored once — amount, category, frequency, start date.
+→ Upcoming occurrences are computed from startDate + frequency, purely for preview. Nothing is written.
+→ A local notification reminds you when one is due.
+→ Only when you confirm does it become a real Transaction in the store.
 
-Next post: what I learned building SpendWise, and what I'd do differently.
+The principle: the store holds facts, not forecasts. Predictions get computed and shown, never persisted alongside reality.
+
+It's the same instinct as deriving totals instead of storing them — keep the stored model small and factual, and compute everything else.
+
+Next post wraps the series.
 
 Open source — GitHub link in the comments.
 
-How do you test business-critical logic? 👇
+Auto-post or confirm-first — which would you expect as a user? 👇
 
-#iOSDevelopment #SwiftUI #Swift #SwiftTesting #Testing #MVVM #SoftwareArchitecture #SwiftData #OpenSource #LearningInPublic`,
+#iOSDevelopment #Swift #SwiftUI #SwiftData #DomainModeling #SoftwareArchitecture #OpenSource #MobileDevelopment #iOSDeveloper #LearningInPublic`,
 });

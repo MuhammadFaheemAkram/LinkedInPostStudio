@@ -103,11 +103,27 @@ It now shows up in the project picker and in `?project=<slug>` deep links.
 
 | Category | Layouts |
 | --- | --- |
-| **Project** | `projectHero`, `projectOverview`, `techStack`, `folderTree` |
-| **Architecture** | `architecture`, `flow`, `decisionMatrix` |
-| **Engineering** | `comparison`, `beforeAfter`, `metrics`, `checklist`, `pyramid` |
+| **Project** | `projectHero`, `projectOverview`, `techStack`, `folderTree`, `chartShowcase` |
+| **Architecture** | `architecture`, `flow`, `decisionMatrix`, `dataModel` |
+| **Engineering** | `comparison`, `beforeAfter`, `metrics`, `checklist`, `pyramid`, `pitfall` |
 | **Code** | `code` (Swift, Kotlin, Java, Dart, TypeScript) |
 | **Career / Reflection** | `timeline`, `reflection`, `quoteHero` |
+
+### One concept per post, one concept per series
+
+Posts run daily to the same audience, so **a concept explained in one project is
+spent** — don't re-explain the stack, the folder tree, or the data flow in the next
+project. Pick what is genuinely new about *this* app, and prefer a layout the series
+hasn't used recently. When a post deserves a shape that doesn't exist yet, add a
+layout rather than forcing the content into an existing one.
+
+### Chart colours
+
+`chartShowcase` uses a fixed categorical order — `#0A84FF`, `#D97706`, `#A855F7`,
+`#0FA5B8` — validated against the dark chart surface for lightness, chroma, CVD
+separation and contrast (not chosen by eye). Series are always named next to their
+mark, so colour never carries identity alone. Assign in order; never cycle or
+reassign by rank.
 
 Every layout's exact data shape lives in `src/types/post.ts`; friendly names/descriptions in
 `src/lib/layoutRegistry.ts`.
