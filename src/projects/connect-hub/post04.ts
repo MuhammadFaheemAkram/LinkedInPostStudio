@@ -1,58 +1,69 @@
 import { definePost } from '../../lib/factories';
 
-// 4/10 — Data flow overview: layers + node pipeline + rules.
+// 4/8 — NEW concept: async choreography / perceived presence. Uses the new
+// `sequence` layout, which reads like a chat transcript.
 export default definePost({
-  title: 'DATA FLOW',
-  highlightWord: 'FLOW',
-  subtitle: 'Every user action follows one predictable path.',
-  layout: 'projectOverview',
-  quote: 'Good architecture makes every layer responsible for one thing.',
+  title: 'THE ILLUSION OF PRESENCE',
+  highlightWord: 'ILLUSION',
+  subtitle: 'Nobody is on the other end. It still has to feel like someone is.',
+  layout: 'sequence',
+  quote: 'Responsiveness is a feeling, and feelings are built out of timing.',
   layoutData: {
-    folderTree: [
+    actors: ['You', 'App'],
+    steps: [
+      { from: 'You', to: 'App', label: 'Send a message', timing: '0ms' },
       {
-        name: 'Feature',
-        highlighted: true,
-        children: [{ name: 'Feed' }, { name: 'Chat' }, { name: 'Profile' }],
+        from: 'App',
+        to: 'You',
+        label: 'It appears immediately',
+        detail: 'Written to the local store first, so the UI never waits.',
+      },
+      {
+        from: 'App',
+        to: 'You',
+        label: 'Typing indicator appears',
+        detail: 'A stream flips isTyping — the pause is the point.',
+        timing: '~600ms',
+      },
+      {
+        from: 'App',
+        to: 'You',
+        label: 'The reply arrives',
+        detail: 'Appended through the actor, then streamed to the view.',
+        timing: '~1.8s',
       },
     ],
-    architectureNodes: ['SwiftUI View', '@Observable ViewModel', 'Use Case', 'Repository', 'SwiftData / Fake Service'],
-    techSummary: ['SwiftUI', '@Observable', 'MVVM', 'Repository', 'Actors', 'SwiftData'],
-    notes: [
-      'Views render state, forward intents',
-      'ViewModels coordinate, never own data',
-      'Repositories choose local or remote',
-    ],
+    note: 'None of it is real. The timing is what makes it believable.',
   },
-  linkedInCaption: `🔄 ConnectHub — Understanding the Data Flow
+  linkedInCaption: `💬 ConnectHub — The Illusion of Presence
 
-One of the biggest mindset shifts in modern iOS is treating the UI as a consumer of state — not a place where business logic lives.
+ConnectHub has no server. There is nobody on the other end of the chat.
 
-In ConnectHub, every interaction follows the same path:
+It still had to feel like there was — and that turned out to be a timing problem, not a networking one.
 
-SwiftUI View → @Observable ViewModel → Use Case → Repository → SwiftData / Fake Service
+Here's the choreography when you send a message:
 
-Each layer has a single responsibility:
+→ 0ms — you hit send. The message appears immediately, because it's written to the local store first. The UI never waits for anything.
 
-→ The view renders state and forwards user intent.
-→ The view model manages screen state (@Observable, @MainActor).
-→ Use cases hold the business rule for one action.
-→ The repository coordinates local and remote data.
-→ SwiftData and the fake services provide the actual data.
+→ ~600ms — a typing indicator appears. Not instantly: an instant reply feels robotic. The pause is doing the work.
 
-Why this predictable flow helps:
+→ ~1.8s — the reply arrives, appended through the actor-backed store and streamed back to the view.
 
-→ Easier to debug — every action follows the same path.
-→ Simpler to test — each layer stands alone.
-→ Better scalability — responsibilities don't overlap.
-→ The UI stays focused on rendering, not deciding.
+Three things I learned building it:
 
-Keeping this consistent made it far easier to add auth, bookmarks, chat, and notifications without constantly refactoring.
+→ Delay can be a feature. My first version replied instantly and it felt fake — more like a form validating than a person answering. Adding latency made it more convincing, which is a strange thing to write in a performance-obsessed craft.
 
-Next post: why I used fake services, and how they let me build production-style architecture with no backend.
+→ Your own actions should never be delayed. Only the other party's. The asymmetry is what separates "responsive" from "laggy" — the user's input is instant, the simulated world takes its time.
+
+→ The typing indicator is just state. isTyping flips from an async stream. The whole "presence" effect is one Bool and a well-chosen pause.
+
+The broader point: a lot of what users call "fast" or "alive" isn't raw speed. It's whether the timing matches what they expect to happen.
+
+Next post: why the like button never waits for anything.
 
 Open source — GitHub link in the comments.
 
-How do you keep data flow predictable in your apps? 👇
+What's a small timing detail that made your UI feel real? 👇
 
-#iOSDevelopment #SwiftUI #Swift #MVVM #SwiftData #RepositoryPattern #SoftwareArchitecture #OpenSource #MobileDevelopment #LearningInPublic`,
+#iOSDevelopment #SwiftUI #Swift #SwiftConcurrency #UXEngineering #MobileDevelopment #OpenSource #iOSDeveloper #LearningInPublic #AsyncAwait`,
 });

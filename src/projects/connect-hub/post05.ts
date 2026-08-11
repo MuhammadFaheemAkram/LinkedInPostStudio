@@ -1,53 +1,48 @@
 import { definePost } from '../../lib/factories';
 
-// 5/10 — Fake services behind protocols vs direct API integration.
+// 5/8 — NEW concept: local-first writes. Truthful to the code: like/bookmark
+// write to the SwiftData cache and the UI updates from the observed stream —
+// not optimistic-with-rollback.
 export default definePost({
-  title: 'WHY A FAKE API?',
-  highlightWord: 'FAKE',
-  subtitle: 'Production-style architecture without depending on a real backend.',
-  layout: 'comparison',
-  quote: 'A learning project should teach architecture, not API integration bugs.',
+  title: 'THE LIKE BUTTON NEVER WAITS',
+  highlightWord: 'NEVER WAITS',
+  subtitle: 'Write locally, observe locally. The network is not in the interaction path.',
+  layout: 'metrics',
+  quote: 'The fastest request is the one that was never on the critical path.',
   layoutData: {
-    left: {
-      title: 'Direct API',
-      body: ['Needs a live backend', 'Flaky responses', 'Hard to test edge cases', 'Network blocks learning'],
-    },
-    right: {
-      title: 'Fake Service',
-      body: ['Same protocol contract', 'Predictable responses', 'Easy error simulation', 'Fully offline'],
-    },
-    centerLabel: 'VS',
-    favorRight: true,
+    metrics: [
+      { label: 'Tap to feedback', before: 'A round trip', after: 'Immediate' },
+      { label: 'Source of truth', before: 'The response', after: 'The local store' },
+      { label: 'With no network', before: 'Nothing happens', after: 'Still works' },
+    ],
   },
-  linkedInCaption: `🌐 ConnectHub — Why I Used Fake Services
+  linkedInCaption: `❤️ ConnectHub — Why the Like Button Never Waits
 
-A question I get often:
+Tapping like should be the most boring interaction in a social app. It's also an easy one to get subtly wrong.
 
-"If the app is open source, why not connect a real backend?"
+The naive version: tap → call the server → wait → update the UI. Even at 200ms, that's a button that feels sticky. With no connection, it does nothing at all.
 
-Simple: the goal of ConnectHub was to practice iOS architecture — not backend work.
+ConnectHub inverts it. The like writes to the local store, and the UI updates because it is *observing* that store.
 
-Instead of calling a real server, I defined service protocols with fake implementations that simulate real network behavior (bundled JSON + Task.sleep delays).
+What changes:
 
-The benefits:
+→ Tap to feedback: a round trip → immediate.
+→ Source of truth: the server's response → the local store.
+→ With no network: nothing happens → it still works.
 
-→ The app runs completely offline.
-→ Network delays are simulated consistently.
-→ Error states are trivial to reproduce and test.
-→ Repository logic is identical to a production app.
-→ A real URLSession client could drop in later — no UI changes.
+The important part isn't "it's faster". It's that the interaction and the sync are no longer the same operation.
 
-The view models and repositories don't know whether data comes from a fake service or a real server. They depend only on protocols.
+The UI's job is to reflect local state. Getting that state to a server later is a separate concern with separate failure handling — and crucially, its failures don't have to live inside a button tap.
 
-That separation is one of the biggest advantages of the repository pattern.
+Because ConnectHub's backend is fake, this is easy to demo. But the shape is exactly what you'd keep in production: write locally, render from local, reconcile in the background. It's why good apps stay usable on a train.
 
-For a learning project, it removed unnecessary complexity while still letting me practice production-inspired architecture.
+One honest caveat: this only works if the local store really is the single source of truth. The moment a screen renders straight from a network response instead, the two disagree — and you're back to a UI that flickers between versions of reality.
 
-Next post: how ConnectHub combines local storage and remote data for an offline-first experience.
+Next post: the one place where responding instantly is the wrong answer.
 
 Open source — GitHub link in the comments.
 
-Fake services for learning — smart, or a shortcut? 👇
+Local-first or server-confirmed — what does your app do? 👇
 
-#iOSDevelopment #SwiftUI #Swift #MVVM #RepositoryPattern #SoftwareArchitecture #SwiftData #OpenSource #LearningInPublic`,
+#iOSDevelopment #SwiftUI #Swift #SwiftData #OfflineFirst #UXEngineering #SoftwareArchitecture #OpenSource #iOSDeveloper #LearningInPublic`,
 });

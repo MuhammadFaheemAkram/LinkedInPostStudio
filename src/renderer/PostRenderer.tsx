@@ -20,6 +20,9 @@ import { ProjectOverviewLayout } from '../layouts/ProjectOverviewLayout';
 import { PyramidLayout } from '../layouts/PyramidLayout';
 import { QuoteHeroLayout } from '../layouts/QuoteHeroLayout';
 import { ReflectionLayout } from '../layouts/ReflectionLayout';
+import { SequenceLayout } from '../layouts/SequenceLayout';
+import { StatHighlightLayout } from '../layouts/StatHighlightLayout';
+import { StateMachineLayout } from '../layouts/StateMachineLayout';
 import { TechStackLayout } from '../layouts/TechStackLayout';
 import { TimelineLayout } from '../layouts/TimelineLayout';
 import type { RenderablePost } from '../types/post';
@@ -68,6 +71,12 @@ function renderLayout(post: RenderablePost) {
       return <DataModelLayout data={post.layoutData} />;
     case 'chartShowcase':
       return <ChartShowcaseLayout data={post.layoutData} />;
+    case 'statHighlight':
+      return <StatHighlightLayout data={post.layoutData} />;
+    case 'stateMachine':
+      return <StateMachineLayout data={post.layoutData} />;
+    case 'sequence':
+      return <SequenceLayout data={post.layoutData} />;
     default:
       return post satisfies never;
   }

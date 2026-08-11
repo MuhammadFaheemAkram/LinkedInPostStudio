@@ -1,51 +1,48 @@
 import { definePost } from '../../lib/factories';
 
-// 7/10 — State-driven UI vs imperative UI.
+// 7/8 — NEW concept: the feed's READ path (cache + paging), distinct from
+// post 5's write path. `pyramid` — unused in Movie Explorer and SpendWise.
 export default definePost({
-  title: 'STATE OVER EVENTS',
-  highlightWord: 'STATE',
-  subtitle: 'Modern iOS gets simpler when the UI observes state instead of controlling it.',
-  layout: 'comparison',
-  quote: 'When the UI reflects state, bugs get easier to reason about.',
+  title: 'WHAT A FEED STANDS ON',
+  highlightWord: 'STANDS ON',
+  subtitle: 'An infinite list is three decisions stacked on top of each other.',
+  layout: 'pyramid',
+  quote: 'Users never see your loading strategy. They only feel it.',
   layoutData: {
-    left: {
-      title: 'Imperative UI',
-      body: ['Update views by hand', 'Callbacks everywhere', 'State scattered', 'Hard to debug'],
-    },
-    right: {
-      title: 'State-Driven UI',
-      body: ['One @Observable state', 'View re-renders itself', 'Predictable rendering', 'Easy to test'],
-    },
-    centerLabel: 'VS',
-    favorRight: true,
+    levels: [
+      { title: 'Cached Posts', description: 'The feed renders from SwiftData before any request is made' },
+      { title: 'Paged Fetching', description: 'One page at a time, with an explicit canLoadMore flag' },
+      { title: 'Instant Feel', description: 'Nothing the user does waits on the network' },
+    ],
   },
-  linkedInCaption: `⚡ ConnectHub — Why State-Driven UI
+  linkedInCaption: `📰 ConnectHub — What a Feed Stands On
 
-One of the biggest lessons from ConnectHub wasn't a new framework.
+A social feed looks like the simplest screen in the app. It's a list. You scroll it.
 
-It was thinking differently about UI.
+It's actually three decisions stacked on top of each other, and each one only works because of the one below it.
 
-Instead of telling the screen what to update, the screen just observes state:
+1. Cached posts — the foundation.
+The feed renders from SwiftData *before* any request goes out. Open the app on a plane and you still see your feed. The network refreshes the cache; it never blocks the first paint.
 
-User Action → ViewModel → @Observable state → SwiftUI
+2. Paged fetching — the middle.
+Posts load a page at a time, with an explicit flag for whether more exist. Two details mattered more than I expected:
 
-Whenever state changes, SwiftUI re-renders the latest UI. That means:
+→ "Am I loading more?" and "am I refreshing?" are different states. Collapse them into one isLoading and you get a full-screen spinner over content the user was already reading.
 
-→ The UI holds no business logic.
-→ Screen state has a single source of truth.
-→ Loading, success, empty, and error states are handled consistently.
-→ The UI is easier to debug — every screen reflects its current state.
-→ View models become much easier to unit test.
+→ You need an honest answer to "is that everything?" Guessing produces either a spinner that never resolves, or a feed that stops early.
 
-This changed how I build. Instead of asking "which view should I update?", I now ask "what should the current state look like?"
+3. Instant feel — the top.
+Because 1 and 2 hold, nothing the user does has to wait. Scroll, like, bookmark — all local.
 
-That small shift leads to simpler code and more predictable apps.
+That's the part I'd carry into any list screen: perceived speed is mostly about what you *don't* make the user wait for. The cache means they never wait to see something. Paging means they never wait for everything.
 
-Next post: how I tested ConnectHub — and why testing each layer separately gave me the confidence to keep adding features.
+Users never see your loading strategy. They only feel it.
+
+Final post next.
 
 Open source — GitHub link in the comments.
 
-Imperative or state-driven — where did your team land? 👇
+What's your default: cache-first or network-first? 👇
 
-#iOSDevelopment #SwiftUI #Swift #StateManagement #MVVM #SoftwareArchitecture #OpenSource #MobileDevelopment #LearningInPublic`,
+#iOSDevelopment #SwiftUI #Swift #SwiftData #OfflineFirst #Performance #SoftwareArchitecture #OpenSource #iOSDeveloper #LearningInPublic`,
 });

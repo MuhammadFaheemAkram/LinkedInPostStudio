@@ -1,52 +1,44 @@
 import { definePost } from '../../lib/factories';
 
-// 8/10 — Testing strategy (checklist; Android used a 2nd tech-stack grid — checklist reads better).
+// 8/8 — Closer. projectHero is used as an *opener* in the other two projects,
+// so using it to close here keeps ConnectHub's own opener (statHighlight) fresh.
 export default definePost({
-  title: 'TESTING THE APP',
-  highlightWord: 'TESTING',
-  subtitle: 'Swift Testing with protocol fakes across every architectural layer.',
-  layout: 'checklist',
-  quote: 'Good tests protect your architecture as the app grows.',
+  title: 'WHAT SCALE TEACHES',
+  highlightWord: 'SCALE',
+  subtitle: 'The problems that only appear once an app gets big enough.',
+  layout: 'projectHero',
+  quote: 'A small app teaches you the language. A big one teaches you the trade-offs.',
   layoutData: {
-    heading: 'What I cover with Swift Testing:',
-    items: [
-      'View models — Feed, Login, Search, Comments',
-      'Use cases — like, bookmark, create post',
-      'The actor-backed message store (concurrent sends)',
-      'Repositories & fake services',
-      'SwiftData cache — in-memory container',
-    ],
+    description:
+      'ConnectHub is 13 features sharing one architecture, running entirely offline. Every hard part came from size — concurrent writes, perceived latency, session routing, doing less work — not from any single screen.',
+    techStack: ['Actors', 'State Machines', 'Local-first Writes', 'Debouncing', 'Paging', 'Swift Testing'],
+    features: ['Feed', 'Chat', 'Search', 'Bookmarks', 'Notifications', 'Profile'],
   },
-  linkedInCaption: `🧪 ConnectHub — My Testing Strategy
+  linkedInCaption: `✅ ConnectHub — What Scale Teaches
 
-Writing features is satisfying. Keeping them working as the project grows is where testing earns its place.
+Eight posts ago I said a bigger app surfaces problems a small one never does. Here's what that actually meant.
 
-With ConnectHub, I wanted tests to reflect the architecture — not just chase coverage.
+Every hard problem in ConnectHub came from size, not from any individual screen:
 
-What I cover with Swift Testing (and protocol fakes):
+→ Concurrency. Chat was the first place two things genuinely wrote at once. An actor made the data race impossible to express instead of something I had to remember to avoid.
 
-→ View models — Feed, Login, Search, Comments, Bookmarks…
-→ Use cases — like, bookmark, create post, add comment.
-→ The actor-backed message store — concurrent sends stay consistent.
-→ Repositories and fake services.
-→ SwiftData cache — using an in-memory container.
+→ Session. With 13 features, "is the user signed in?" can't be answered in 13 places. One state machine at the root owns it, and everything else just follows.
 
-Each layer answers a different question:
+→ Perceived speed. The like button, the cached feed, the typing indicator — none are performance optimisations. They're decisions about what the user should never have to wait for.
 
-→ Does the business logic work?
-→ Does state update correctly?
-→ Is local data stored as expected?
-→ Can users complete the important flows?
+→ Doing less. The best fix in the whole app was a debounce: six keystrokes, one search.
 
-Testing each layer independently made refactoring far less scary — the tests catch regressions early instead of me finding them in the simulator.
+None of these show up when you're building four screens. They're what you learn by building something big enough to break.
 
-For me, testing isn't about 100% coverage. It's about enough confidence to keep improving the architecture without fear.
+The other thing I'd say: I built this with fake services and no backend, and it made the architecture *more* honest, not less. With nothing to blame on the network, every problem left was a design problem.
 
-Next posts: what I learned, and what I'd change if this became a production app.
+That wraps Project 02 of "Modern iOS in Practice". Next up: SpendWise — where the challenge stops being concurrency and starts being correctness.
+
+Thanks to everyone following along. 🙏
 
 Open source — GitHub link in the comments.
 
-What do you test first in a new app? 👇
+What problem did you only discover once your app got big? 👇
 
-#iOSDevelopment #SwiftUI #Swift #SwiftTesting #Testing #Actors #MVVM #SoftwareArchitecture #OpenSource #LearningInPublic`,
+#iOSDevelopment #SwiftUI #Swift #SwiftConcurrency #Actors #SoftwareArchitecture #SwiftData #OpenSource #iOSDeveloper #LearningInPublic`,
 });

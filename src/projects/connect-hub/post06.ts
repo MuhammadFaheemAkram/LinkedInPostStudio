@@ -1,53 +1,53 @@
 import { definePost } from '../../lib/factories';
 
-// 6/10 — Offline-first: remote + local coordinated by the repository (+ actor chat).
+// 6/8 — NEW concept: debounce / doing less work. Real Combine pipeline from
+// SearchViewModel. `code` layout — used once in Movie Explorer, but this is a
+// completely different kind of snippet (a reactive pipeline, not a view model).
 export default definePost({
-  title: 'OFFLINE FIRST',
-  highlightWord: 'OFFLINE',
-  subtitle: 'Local storage and the network work together, not against each other.',
-  layout: 'architecture',
-  quote: 'The best network request is the one your user never has to wait for.',
+  title: 'SEARCH THAT WAITS',
+  highlightWord: 'WAITS',
+  subtitle: 'Typing "swift" is six keystrokes. It should not be six searches.',
+  layout: 'code',
+  quote: 'Sometimes the optimisation is not doing the work at all.',
   layoutData: {
-    left: {
-      title: 'Remote',
-      items: ['Fake Service', 'DTOs', 'Simulated Delay', 'Error Handling'],
-    },
-    right: {
-      title: 'Local',
-      items: ['SwiftData', '@AppStorage', 'Cached Feed', 'Session'],
-    },
-    center:
-      'The Repository coordinates both and decides what the UI sees. Chat messages are held by a thread-safe actor.',
+    language: 'swift',
+    filename: 'SearchViewModel.swift',
+    code: [
+      'subject',
+      '    .debounce(for: .milliseconds(300),',
+      '              scheduler: DispatchQueue.main)',
+      '    .removeDuplicates()',
+      '    .sink { [weak self] query in',
+      '        Task { await self?.runSearch(query) }',
+      '    }',
+    ].join('\n'),
+    caption: 'debounce waits for a pause. removeDuplicates drops repeats. Six keystrokes, one search.',
   },
-  linkedInCaption: `📦 ConnectHub — Building Offline-First
+  linkedInCaption: `🔎 ConnectHub — Search That Waits
 
-A lesson from ConnectHub: users shouldn't have to think about where their data comes from.
+Type "swift" into a naive search field and you fire six searches — one per keystroke. Five of them are already obsolete before they return.
 
-So instead of choosing between local storage and a remote source, I made both work together.
+Worse, they can finish out of order. The results for "swi" can land after the results for "swift", and now the screen is showing the wrong thing entirely.
 
-How responsibilities split:
+The fix is to make the search patient. In ConnectHub that's a small Combine pipeline:
 
-→ Fake services provide fresh data and simulate the network.
-→ SwiftData stores what should stay available offline.
-→ @AppStorage persists lightweight preferences and the session.
-→ The Repository coordinates both and decides what the UI receives.
+→ debounce(300ms) — wait for a pause in typing before searching at all. Six keystrokes become one search.
 
-And chat gets special treatment: messages are held by a thread-safe actor (MessageStore), so concurrent sends and the simulated reply stay consistent without hand-written locks.
+→ removeDuplicates() — if the query hasn't actually changed, don't search again. Backspacing a character and retyping it shouldn't cost anything.
 
-Why it matters:
+→ Then hand off to async/await for the actual work.
 
-→ The UI doesn't care where data comes from.
-→ Cached content stays available with no network.
-→ Business logic lives in the repository, not scattered across the app.
-→ Swapping fakes for a real backend would take minimal changes.
+This is the one place in the whole app where I reached for Combine. Everywhere else, async/await is simpler and clearer. But debouncing is a *continuous stream over time* problem, and that's precisely what Combine is good at.
 
-Separating responsibilities this way keeps the project maintainable and close to how production iOS apps are structured.
+That's the real takeaway: async/await and Combine aren't competitors. One-shot work → async/await. A stream of events where timing matters → Combine. Knowing which question you're answering picks the tool.
 
-Next post: how @Observable keeps the UI reactive with a single source of truth.
+And the deeper lesson: the best performance win here wasn't making the search faster. It was not running it five times.
+
+Next post: what a feed stands on.
 
 Open source — GitHub link in the comments.
 
-How do you handle offline in your apps? 👇
+Where do you still reach for Combine in a modern Swift codebase? 👇
 
-#iOSDevelopment #SwiftUI #Swift #SwiftData #Actors #MVVM #OfflineFirst #SoftwareArchitecture #OpenSource #LearningInPublic`,
+#iOSDevelopment #Swift #SwiftUI #Combine #AsyncAwait #Performance #SoftwareArchitecture #OpenSource #iOSDeveloper #LearningInPublic`,
 });

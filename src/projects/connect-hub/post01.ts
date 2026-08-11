@@ -1,44 +1,50 @@
 import { definePost } from '../../lib/factories';
 
-// 1/10 — Project hero. Mirrors the Android ConnectHub opener, iOS stack.
+// 1/8 — Opener. Uses statHighlight (not projectHero) so the flagship opens on
+// something the earlier project didn't. Numbers are real counts from the repo.
 export default definePost({
-  title: 'CONNECT HUB',
-  highlightWord: 'HUB',
-  subtitle: 'A production-inspired SwiftUI social app built to explore scalable architecture.',
-  layout: 'projectHero',
-  quote: 'Architecture is what lets features grow without growing complexity.',
+  title: 'A COMPLETE SOCIAL APP',
+  highlightWord: 'COMPLETE',
+  subtitle: 'Feed, chat, search, notifications, profiles — and no backend anywhere.',
+  layout: 'statHighlight',
+  quote: 'Small apps teach you syntax. Big ones teach you where things break.',
   layoutData: {
-    description:
-      'ConnectHub is an open-source iOS app that simulates a modern social platform — auth, feed, chat, notifications — while demonstrating scalable SwiftUI architecture, offline-first data, and production-inspired engineering.',
-    techStack: ['SwiftUI', '@Observable', 'async/await', 'Actors', 'SwiftData', 'Swift Testing'],
-    features: ['Fake Auth & Session', 'Social Feed', 'Offline-first', 'Actor-based Chat', 'Notifications', 'Unit Tests'],
+    stats: [
+      { value: '13', label: 'Features' },
+      { value: '34', label: 'Use Cases' },
+      { value: '5', label: 'Fake Services' },
+      { value: '22', label: 'Test Suites' },
+    ],
+    points: ['Runs fully offline', 'No API keys', 'One consistent architecture'],
   },
   linkedInCaption: `🚀 Project 02 — ConnectHub (iOS)
 
-Movie Explorer taught me how to build a modern iOS app.
+Movie Explorer was four screens. It taught me how the pieces fit.
 
-ConnectHub pushed me to think beyond individual screens — how a larger app stays maintainable as it grows.
+ConnectHub is a complete social app — and it taught me what happens when there are a lot of pieces.
 
-Instead of another demo, I wanted to simulate the architecture of a production-style social platform.
+What's inside:
 
-It has auth, a social feed, chat, notifications, bookmarks, offline caching, and settings — but those features were never the real goal.
+→ 13 features — feed, chat, search, bookmarks, notifications, profile, auth and more
+→ 34 use cases
+→ 5 fake services standing in for a backend
+→ 22 test suites
+→ Zero API keys. It runs entirely offline.
 
-The real objective was learning to organize a growing codebase with:
+But the interesting part isn't the count. It's that a bigger app surfaces problems a small one never does:
 
-→ SwiftUI
-→ MVVM + Use Cases
-→ Repository Pattern
-→ Protocol-based Dependency Injection
-→ SwiftData (offline cache)
-→ async/await + Actors
-→ Fake service protocols
-→ Swift Testing
+→ Two things writing to the same data at the same time.
+→ A button that must feel instant while the work happens behind it.
+→ A screen that has to look alive when nothing real is happening.
+→ Deciding, at launch, whether the user is even signed in.
 
-Over the next posts, I'll share the engineering decisions behind it — project structure, state management, offline-first data, the actor-backed chat, testing, and scalability.
+Those aren't "add another screen" problems. They're the ones that make you actually think.
 
-The project is open source — GitHub link in the comments.
+Over the next posts I'll go through them one at a time — concurrency and actors, session as a state machine, why the like button never waits, how a typing indicator fakes presence, and how search learns to be patient.
 
-If you were building a production iOS app today, which topic would you want to explore first? 👇
+Open source — GitHub link in the comments.
 
-#iOSDevelopment #SwiftUI #Swift #MVVM #SoftwareArchitecture #SwiftData #Actors #OpenSource #MobileDevelopment #LearningInPublic`,
+What was the first project where scale changed how you had to build? 👇
+
+#iOSDevelopment #SwiftUI #Swift #SwiftConcurrency #SoftwareArchitecture #SwiftData #OpenSource #MobileDevelopment #iOSDeveloper #LearningInPublic`,
 });

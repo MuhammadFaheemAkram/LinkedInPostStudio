@@ -63,8 +63,8 @@ export default {
         cardTitle: ['30px', { lineHeight: '1.2', fontWeight: '600' }],
         body: ['24px', { lineHeight: '1.4', fontWeight: '500' }],
         quote: ['34px', { lineHeight: '1.28', fontWeight: '600' }],
-        footer: ['20px', { lineHeight: '1.3', fontWeight: '500' }],
-        badge: ['18px', { lineHeight: '1.2', fontWeight: '600' }],
+        footer: ['22px', { lineHeight: '1.3', fontWeight: '500' }],
+        badge: ['21px', { lineHeight: '1.2', fontWeight: '600' }],
       },
       borderRadius: {
         canvas: '0px',

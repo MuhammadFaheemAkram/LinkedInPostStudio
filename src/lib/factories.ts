@@ -246,6 +246,42 @@ export function createDefaultLayoutData(layout: PostLayout): AnyLayoutData {
         ],
         note: 'Every figure is computed from the same stored transactions.',
       };
+    case 'statHighlight':
+      return {
+        stats: [
+          { value: '13', label: 'Screens' },
+          { value: '5', label: 'Fake Services' },
+          { value: '40+', label: 'Use Cases' },
+          { value: '22', label: 'Test Suites' },
+        ],
+        points: ['One architecture', 'Fully offline', 'No backend'],
+      };
+    case 'stateMachine':
+      return {
+        states: [
+          { name: 'loading', detail: 'Restoring a saved session', kind: 'initial' },
+          { name: 'unauthenticated', detail: 'Show the auth flow' },
+          { name: 'authenticated', detail: 'Show the main app', kind: 'active' },
+        ],
+        transitions: [
+          { from: 'loading', to: 'authenticated', label: 'a session was restored' },
+          { from: 'loading', to: 'unauthenticated', label: 'no session found' },
+          { from: 'unauthenticated', to: 'authenticated', label: 'sign in succeeds' },
+          { from: 'authenticated', to: 'unauthenticated', label: 'log out' },
+        ],
+        note: 'One value decides the whole app. No screen ever checks "am I logged in?"',
+      };
+    case 'sequence':
+      return {
+        actors: ['You', 'App'],
+        steps: [
+          { from: 'You', to: 'App', label: 'Send a message', timing: '0ms' },
+          { from: 'App', to: 'You', label: 'Message appears instantly', detail: 'Written to the local store first.' },
+          { from: 'App', to: 'You', label: 'Typing indicator', timing: '600ms' },
+          { from: 'App', to: 'You', label: 'Reply arrives', timing: '1.8s' },
+        ],
+        note: 'Nothing here is real. It is choreography — and it feels alive anyway.',
+      };
     default:
       return layout satisfies never;
   }

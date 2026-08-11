@@ -12,6 +12,13 @@ import type {
   DataModelLayoutData,
   DataModelRelation,
   PitfallLayoutData,
+  SequenceLayoutData,
+  SequenceStep,
+  StateMachineLayoutData,
+  StateNode,
+  StateTransition,
+  StatHighlightLayoutData,
+  StatItem,
   ChecklistLayoutData,
   CodeLayoutData,
   ComparisonLayoutData,
@@ -799,6 +806,132 @@ function LayoutDataFields({
               className="editor-input min-h-44 resize-y font-mono"
               value={formatPanels(data.panels)}
               onChange={(event) => onChange({ ...data, panels: parsePanels(event.target.value) })}
+            />
+          </Field>
+          <Field label="Note">
+            <textarea
+              className="editor-input editor-textarea"
+              value={data.note ?? ''}
+              onChange={(event) => onChange({ ...data, note: event.target.value })}
+            />
+          </Field>
+        </>
+      );
+    }
+
+    case 'statHighlight': {
+      const data: StatHighlightLayoutData = post.layoutData;
+      return (
+        <>
+          <Field label="Stats" hint="One per line — value | label">
+            <textarea
+              className="editor-input editor-textarea"
+              value={data.stats.map((s) => `${s.value} | ${s.label}`).join('\n')}
+              onChange={(event) =>
+                onChange({
+                  ...data,
+                  stats: textToLines(event.target.value).map((line) => {
+                    const [value = '', label = ''] = line.split('|').map((p) => p.trim());
+                    return { value, label } satisfies StatItem;
+                  }),
+                })
+              }
+            />
+          </Field>
+          <Field label="Points" hint="One per line.">
+            <textarea
+              className="editor-input editor-textarea"
+              value={linesToText(data.points ?? [])}
+              onChange={(event) => onChange({ ...data, points: textToLines(event.target.value) })}
+            />
+          </Field>
+        </>
+      );
+    }
+
+    case 'stateMachine': {
+      const data: StateMachineLayoutData = post.layoutData;
+      return (
+        <>
+          <Field label="States" hint="One per line — name | detail | initial|normal|active">
+            <textarea
+              className="editor-input editor-textarea font-mono"
+              value={data.states.map((s) => `${s.name} | ${s.detail ?? ''} | ${s.kind ?? 'normal'}`).join('\n')}
+              onChange={(event) =>
+                onChange({
+                  ...data,
+                  states: textToLines(event.target.value).map((line) => {
+                    const [name = '', detail = '', kind = 'normal'] = line.split('|').map((p) => p.trim());
+                    return {
+                      name,
+                      ...(detail ? { detail } : {}),
+                      kind: (['initial', 'normal', 'active'].includes(kind) ? kind : 'normal') as StateNode['kind'],
+                    };
+                  }),
+                })
+              }
+            />
+          </Field>
+          <Field label="Transitions" hint="One per line — from > to | label">
+            <textarea
+              className="editor-input min-h-44 resize-y font-mono"
+              value={data.transitions.map((t) => `${t.from} > ${t.to} | ${t.label}`).join('\n')}
+              onChange={(event) =>
+                onChange({
+                  ...data,
+                  transitions: textToLines(event.target.value).map((line) => {
+                    const [pair = '', label = ''] = line.split('|').map((p) => p.trim());
+                    const [from = '', to = ''] = pair.split('>').map((p) => p.trim());
+                    return { from, to, label } satisfies StateTransition;
+                  }),
+                })
+              }
+            />
+          </Field>
+          <Field label="Note">
+            <textarea
+              className="editor-input editor-textarea"
+              value={data.note ?? ''}
+              onChange={(event) => onChange({ ...data, note: event.target.value })}
+            />
+          </Field>
+        </>
+      );
+    }
+
+    case 'sequence': {
+      const data: SequenceLayoutData = post.layoutData;
+      return (
+        <>
+          <Field label="Actors" hint="Comma separated. The first one sits on the left.">
+            <input
+              className="editor-input"
+              value={data.actors.join(', ')}
+              onChange={(event) => onChange({ ...data, actors: splitListCell(event.target.value) })}
+            />
+          </Field>
+          <Field label="Steps" hint="One per line — from > to | label | detail | timing">
+            <textarea
+              className="editor-input min-h-52 resize-y font-mono"
+              value={data.steps
+                .map((s) => `${s.from} > ${s.to} | ${s.label} | ${s.detail ?? ''} | ${s.timing ?? ''}`)
+                .join('\n')}
+              onChange={(event) =>
+                onChange({
+                  ...data,
+                  steps: textToLines(event.target.value).map((line) => {
+                    const [pair = '', label = '', detail = '', timing = ''] = line.split('|').map((p) => p.trim());
+                    const [from = '', to = ''] = pair.split('>').map((p) => p.trim());
+                    return {
+                      from,
+                      to,
+                      label,
+                      ...(detail ? { detail } : {}),
+                      ...(timing ? { timing } : {}),
+                    } satisfies SequenceStep;
+                  }),
+                })
+              }
             />
           </Field>
           <Field label="Note">

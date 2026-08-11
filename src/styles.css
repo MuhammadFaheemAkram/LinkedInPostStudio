@@ -179,11 +179,11 @@
   }
 
   .project-badge span {
-    @apply font-mono text-[15px] font-bold uppercase tracking-[0.14em] text-post-accent;
+    @apply font-mono text-[20px] font-bold uppercase tracking-[0.14em] text-post-accent;
   }
 
   .project-badge strong {
-    @apply mt-1 text-[22px] font-bold text-post-white;
+    @apply mt-1 text-[25px] font-bold text-post-white;
   }
 
   /* ----------------------------------------------------------- title block */
@@ -265,19 +265,19 @@
   }
 
   .footer-dash {
-    @apply text-[22px] font-semibold text-post-gray2;
+    @apply text-[24px] font-semibold text-post-gray2;
   }
 
   .footer-name {
-    @apply text-[22px] font-bold text-post-white;
+    @apply text-[24px] font-bold text-post-white;
   }
 
   .footer-role {
-    @apply mt-1 text-[18px] font-semibold uppercase leading-tight tracking-[0.1em] text-post-gray;
+    @apply mt-1 text-[21px] font-semibold uppercase leading-tight tracking-[0.1em] text-post-gray;
   }
 
   .footer-link {
-    @apply mt-1 text-[20px] font-medium lowercase leading-tight tracking-normal text-post-accent;
+    @apply mt-1 text-[22px] font-medium lowercase leading-tight tracking-normal text-post-accent;
   }
 
   .footer-watermark {
@@ -290,7 +290,7 @@
   }
 
   .footer-watermark-label {
-    @apply font-mono text-[16px] font-bold uppercase leading-none tracking-[0.14em] text-post-accent;
+    @apply font-mono text-[20px] font-bold uppercase leading-none tracking-[0.14em] text-post-accent;
   }
 
   .footer-watermark-count {
@@ -350,7 +350,7 @@
   }
 
   .architecture-row {
-    @apply rounded-xl border border-white/10 bg-post-quote px-5 py-3 text-center font-mono text-[21px] font-bold leading-tight text-post-white;
+    @apply rounded-xl border border-white/10 bg-post-quote px-5 py-3 text-center font-mono text-[24px] font-bold leading-tight text-post-white;
   }
 
   .architecture-arrow {
@@ -379,11 +379,11 @@
   }
 
   .code-block {
-    @apply overflow-hidden p-7 font-mono text-[22px] leading-relaxed text-post-white;
+    @apply overflow-hidden p-7 font-mono text-[25px] leading-relaxed text-post-white;
   }
 
   .code-caption {
-    @apply border-t border-white/10 px-7 py-4 text-[19px] font-medium text-post-gray;
+    @apply border-t border-white/10 px-7 py-4 text-[23px] font-medium text-post-gray;
   }
 
   .code-block .token.keyword,
@@ -450,7 +450,7 @@
   }
 
   .timeline-body {
-    @apply text-[22px] font-medium leading-tight text-post-gray;
+    @apply text-[24px] font-medium leading-tight text-post-gray;
   }
 
   /* reflection */
@@ -467,11 +467,11 @@
   }
 
   .reflection-point {
-    @apply w-[292px] rounded-card border border-white/10 bg-post-card px-5 py-6 text-[22px] font-semibold leading-tight text-post-white shadow-ios;
+    @apply w-[292px] rounded-card border border-white/10 bg-post-card px-5 py-6 text-[24px] font-semibold leading-tight text-post-white shadow-ios;
   }
 
   .reflection-point-index {
-    @apply mb-3 font-mono text-[18px] font-bold text-post-accent;
+    @apply mb-3 font-mono text-[21px] font-bold text-post-accent;
   }
 
   /* before / after */
@@ -533,7 +533,7 @@
   }
 
   .decision-list-label {
-    @apply mb-2 font-mono text-[16px] font-bold uppercase leading-tight tracking-[0.08em];
+    @apply mb-2 font-mono text-[20px] font-bold uppercase leading-tight tracking-[0.08em];
   }
 
   .decision-list-label-pros {
@@ -545,7 +545,7 @@
   }
 
   .decision-list {
-    @apply space-y-2 text-[20px] font-medium leading-snug text-post-white;
+    @apply space-y-2 text-[23px] font-medium leading-snug text-post-white;
   }
 
   .decision-list-item {
@@ -582,7 +582,7 @@
   }
 
   .pyramid-description {
-    @apply mt-2 text-[21px] font-medium leading-tight text-post-gray;
+    @apply mt-2 text-[24px] font-medium leading-tight text-post-gray;
   }
 
   /* checklist */
@@ -632,7 +632,7 @@
   }
 
   .metric-value span {
-    @apply mb-2 block font-mono text-[15px] font-bold uppercase leading-none tracking-[0.08em];
+    @apply mb-2 block font-mono text-[20px] font-bold uppercase leading-none tracking-[0.08em];
   }
 
   .metric-value-before span {
@@ -686,7 +686,7 @@
   }
 
   .project-hero-label {
-    @apply mb-3 font-mono text-[16px] font-bold uppercase tracking-[0.1em] text-post-accent;
+    @apply mb-3 font-mono text-[20px] font-bold uppercase tracking-[0.1em] text-post-accent;
   }
 
   .project-hero-links {
@@ -694,7 +694,7 @@
   }
 
   .project-hero-link {
-    @apply inline-flex items-center gap-2 rounded-xl border border-post-accent/40 bg-post-accent/[0.08] px-4 py-3 font-mono text-[17px] font-bold uppercase tracking-[0.04em] text-post-white;
+    @apply inline-flex items-center gap-2 rounded-xl border border-post-accent/40 bg-post-accent/[0.08] px-4 py-3 font-mono text-[21px] font-bold uppercase tracking-[0.04em] text-post-white;
   }
 
   /* tech stack */
@@ -715,7 +715,7 @@
   }
 
   .tech-badge {
-    @apply inline-flex items-center rounded-full border border-white/10 bg-post-elevated px-4 py-2 font-mono text-[18px] font-semibold text-post-white;
+    @apply inline-flex items-center rounded-full border border-white/10 bg-post-elevated px-4 py-2 font-mono text-[21px] font-semibold text-post-white;
   }
 
   /* folder tree */
@@ -728,7 +728,7 @@
   }
 
   .folder-tree-item {
-    @apply flex min-h-[44px] items-center gap-3 rounded-xl border border-transparent bg-post-quote px-4 py-2 text-[20px] font-bold leading-tight text-post-white;
+    @apply flex min-h-[44px] items-center gap-3 rounded-xl border border-transparent bg-post-quote px-4 py-2 text-[23px] font-bold leading-tight text-post-white;
   }
 
   .folder-tree-item-highlighted {
@@ -744,7 +744,7 @@
   }
 
   .folder-tree-note {
-    @apply ml-auto text-right text-[15px] font-medium text-post-gray2;
+    @apply ml-auto text-right text-[20px] font-medium text-post-gray2;
   }
 
   /* project overview */
@@ -765,15 +765,15 @@
   }
 
   .project-overview-architecture .flow-node {
-    @apply px-4 py-3 text-[19px];
+    @apply px-4 py-3 text-[22px];
   }
 
   .project-overview-label {
-    @apply mb-3 block font-mono text-[15px] font-bold uppercase tracking-[0.08em] text-post-accent;
+    @apply mb-3 block font-mono text-[20px] font-bold uppercase tracking-[0.08em] text-post-accent;
   }
 
   .overview-note-item {
-    @apply flex items-start gap-3 text-[20px] font-medium leading-snug text-post-white;
+    @apply flex items-start gap-3 text-[23px] font-medium leading-snug text-post-white;
   }
 
   .overview-note-dot {
@@ -802,7 +802,7 @@
   }
 
   .pitfall-label {
-    @apply mb-4 flex items-center gap-2 font-mono text-[16px] font-bold uppercase tracking-[0.12em] text-post-gray;
+    @apply mb-4 flex items-center gap-2 font-mono text-[20px] font-bold uppercase tracking-[0.12em] text-post-gray;
   }
 
   .pitfall-card-trap .pitfall-label {
@@ -818,7 +818,7 @@
   }
 
   .pitfall-body {
-    @apply text-[21px] font-medium leading-snug text-post-gray;
+    @apply text-[24px] font-medium leading-snug text-post-gray;
   }
 
   .pitfall-note {
@@ -843,7 +843,7 @@
   }
 
   .entity-name {
-    @apply border-b border-white/10 bg-white/[0.03] px-5 py-3 font-mono text-[21px] font-bold text-post-white;
+    @apply border-b border-white/10 bg-white/[0.03] px-5 py-3 font-mono text-[24px] font-bold text-post-white;
   }
 
   .entity-card-primary .entity-name {
@@ -851,7 +851,7 @@
   }
 
   .entity-fields {
-    @apply space-y-2 px-5 py-4 font-mono text-[17px] font-medium leading-tight text-post-gray;
+    @apply space-y-2 px-5 py-4 font-mono text-[21px] font-medium leading-tight text-post-gray;
   }
 
   .data-model-relations {
@@ -859,11 +859,11 @@
   }
 
   .relation-pill {
-    @apply inline-flex items-center gap-2 rounded-full border border-white/10 bg-post-quote px-5 py-2.5 font-mono text-[17px] font-semibold text-post-white;
+    @apply inline-flex items-center gap-2 rounded-full border border-white/10 bg-post-quote px-5 py-2.5 font-mono text-[21px] font-semibold text-post-white;
   }
 
   .relation-label {
-    @apply ml-1 text-[15px] font-medium text-post-gray2;
+    @apply ml-1 text-[20px] font-medium text-post-gray2;
   }
 
   .data-model-rules {
@@ -889,11 +889,11 @@
   }
 
   .chart-panel-title {
-    @apply mb-4 text-[22px] font-semibold leading-tight text-post-white;
+    @apply mb-4 text-[24px] font-semibold leading-tight text-post-white;
   }
 
   .chart-panel-caption {
-    @apply text-[17px] font-medium leading-snug text-post-gray;
+    @apply text-[21px] font-medium leading-snug text-post-gray;
   }
 
   .chart-svg {
@@ -909,14 +909,14 @@
   .chart-value {
     fill: theme('colors.post.white');
     font-family: theme('fontFamily.mono');
-    font-size: 15px;
+    font-size: 20px;
     font-weight: 700;
   }
 
   .chart-tick {
     fill: theme('colors.post.gray2');
     font-family: theme('fontFamily.mono');
-    font-size: 13px;
+    font-size: 20px;
     font-weight: 600;
   }
 
@@ -933,7 +933,7 @@
   }
 
   .donut-legend li {
-    @apply flex items-center gap-2.5 text-[17px] font-medium leading-none text-post-white;
+    @apply flex items-center gap-2.5 text-[21px] font-medium leading-none text-post-white;
   }
 
   .legend-swatch {
@@ -945,7 +945,7 @@
   }
 
   .legend-value {
-    @apply shrink-0 font-mono text-[16px] font-bold text-post-gray;
+    @apply shrink-0 font-mono text-[20px] font-bold text-post-gray;
   }
 
   .chart-inline-legend {
@@ -953,6 +953,146 @@
   }
 
   .chart-inline-legend li {
-    @apply flex items-center gap-2 text-[17px] font-medium leading-none text-post-white;
+    @apply flex items-center gap-2 text-[21px] font-medium leading-none text-post-white;
+  }
+
+  /* ------------------------------------------------------ stat highlight */
+  .stat-highlight-layout {
+    @apply w-full space-y-7;
+  }
+
+  .stat-grid {
+    @apply grid items-stretch gap-5;
+  }
+
+  .stat-tile {
+    @apply flex flex-col items-center justify-center rounded-card border border-white/10 bg-post-card px-5 py-9 text-center shadow-ios;
+  }
+
+  .stat-value {
+    @apply font-sans text-[76px] font-extrabold leading-none tracking-tight text-post-accent;
+  }
+
+  /* Reserve two lines so a wrapped label never knocks its number out of line. */
+  .stat-label {
+    @apply mt-4 flex min-h-[2.5em] items-center justify-center text-center text-[22px] font-bold uppercase leading-tight tracking-[0.1em] text-post-gray;
+  }
+
+  .stat-points {
+    @apply flex flex-wrap justify-center gap-x-8 gap-y-3 rounded-card border border-white/10 bg-post-quote px-8 py-6;
+  }
+
+  .stat-point {
+    @apply flex items-center gap-3 text-[24px] font-semibold leading-tight text-post-white;
+  }
+
+  .stat-point-dot {
+    @apply h-2.5 w-2.5 shrink-0 rounded-full bg-post-accent;
+  }
+
+  /* ------------------------------------------------------- state machine */
+  .state-machine-layout {
+    @apply w-full space-y-6;
+  }
+
+  .state-nodes {
+    @apply grid grid-cols-3 items-stretch gap-5;
+  }
+
+  .state-node {
+    @apply flex flex-col justify-center rounded-card border border-white/10 bg-post-card px-6 py-7 text-center shadow-ios;
+  }
+
+  .state-node-initial {
+    @apply border-dashed border-white/20 bg-post-quote;
+  }
+
+  .state-node-active {
+    @apply border-post-accent/50 bg-post-accent/[0.08];
+  }
+
+  .state-name {
+    @apply font-mono text-[30px] font-bold leading-tight text-post-white;
+  }
+
+  .state-node-active .state-name {
+    @apply text-post-accent;
+  }
+
+  .state-detail {
+    @apply mt-3 text-[21px] font-medium leading-snug text-post-gray;
+  }
+
+  .state-transitions {
+    @apply space-y-3;
+  }
+
+  .state-transition {
+    @apply flex flex-wrap items-center gap-3 rounded-2xl border border-white/10 bg-post-quote px-6 py-4;
+  }
+
+  .transition-endpoint {
+    @apply font-mono text-[22px] font-bold text-post-white;
+  }
+
+  .transition-arrow {
+    @apply text-post-accent;
+  }
+
+  .transition-label {
+    @apply ml-auto text-[22px] font-medium text-post-gray;
+  }
+
+  /* ------------------------------------------------------------ sequence */
+  .sequence-layout {
+    @apply w-full space-y-6;
+  }
+
+  .sequence-actors {
+    @apply flex flex-wrap items-center justify-center gap-4;
+  }
+
+  .sequence-actor {
+    @apply rounded-full border border-post-accent/40 bg-post-accent/[0.08] px-6 py-2.5 font-mono text-[21px] font-bold uppercase tracking-[0.08em] text-post-white;
+  }
+
+  .sequence-steps {
+    @apply space-y-4;
+  }
+
+  .sequence-row {
+    @apply flex;
+  }
+
+  .sequence-row-out {
+    @apply justify-start;
+  }
+
+  .sequence-row-in {
+    @apply justify-end;
+  }
+
+  .sequence-card {
+    @apply w-[76%] rounded-card border border-white/10 bg-post-card px-7 py-5 shadow-ios;
+  }
+
+  .sequence-card-out {
+    @apply border-post-accent/35 bg-post-accent/[0.07];
+  }
+
+  .sequence-meta {
+    @apply mb-2 flex items-center justify-between gap-4 font-mono text-[20px] font-bold uppercase tracking-[0.08em] text-post-accent;
+  }
+
+  .sequence-timing {
+    @apply rounded-full border border-white/10 bg-post-quote px-3 py-1 text-[20px] tracking-normal text-post-gray;
+  }
+
+  .sequence-label {
+    @apply text-[26px] font-bold leading-tight text-post-white;
+  }
+
+  .sequence-detail {
+    @apply mt-2 text-[21px] font-medium leading-snug text-post-gray;
   }
 }

@@ -20,7 +20,10 @@ export type PostLayout =
   | 'projectOverview'
   | 'pitfall'
   | 'dataModel'
-  | 'chartShowcase';
+  | 'chartShowcase'
+  | 'statHighlight'
+  | 'stateMachine'
+  | 'sequence';
 
 /** Languages Prism is configured to highlight. */
 export type SupportedLanguage = 'swift' | 'kotlin' | 'java' | 'dart' | 'typescript';
@@ -238,6 +241,55 @@ export interface ChartShowcaseLayoutData {
   note?: string;
 }
 
+export interface StatItem {
+  /** Short, punchy value — this is set very large, so keep it to a few chars. */
+  value: string;
+  label: string;
+}
+
+/** Big headline numbers — the most legible layout at mobile feed scale. */
+export interface StatHighlightLayoutData {
+  stats: StatItem[];
+  points?: string[];
+}
+
+export interface StateNode {
+  name: string;
+  detail?: string;
+  /** `initial` gets a muted treatment, `active` carries the accent. */
+  kind?: 'initial' | 'normal' | 'active';
+}
+
+export interface StateTransition {
+  from: string;
+  to: string;
+  label: string;
+}
+
+/** States plus the labelled transitions between them. */
+export interface StateMachineLayoutData {
+  states: StateNode[];
+  transitions: StateTransition[];
+  note?: string;
+}
+
+export interface SequenceStep {
+  /** Must match one of `actors`; decides which side the step sits on. */
+  from: string;
+  to: string;
+  label: string;
+  detail?: string;
+  /** Optional timing badge, e.g. "300ms". */
+  timing?: string;
+}
+
+/** Two-party choreography over time — reads like a transcript. */
+export interface SequenceLayoutData {
+  actors: string[];
+  steps: SequenceStep[];
+  note?: string;
+}
+
 /** Union of every layout's data shape (used for editor defaults). */
 export type AnyLayoutData =
   | ComparisonLayoutData
@@ -258,7 +310,10 @@ export type AnyLayoutData =
   | ProjectOverviewLayoutData
   | PitfallLayoutData
   | DataModelLayoutData
-  | ChartShowcaseLayoutData;
+  | ChartShowcaseLayoutData
+  | StatHighlightLayoutData
+  | StateMachineLayoutData
+  | SequenceLayoutData;
 
 /* ------------------------------------------------------------------ post model */
 
@@ -301,7 +356,10 @@ export type PostContent =
   | BasePost<'projectOverview', ProjectOverviewLayoutData>
   | BasePost<'pitfall', PitfallLayoutData>
   | BasePost<'dataModel', DataModelLayoutData>
-  | BasePost<'chartShowcase', ChartShowcaseLayoutData>;
+  | BasePost<'chartShowcase', ChartShowcaseLayoutData>
+  | BasePost<'statHighlight', StatHighlightLayoutData>
+  | BasePost<'stateMachine', StateMachineLayoutData>
+  | BasePost<'sequence', SequenceLayoutData>;
 
 /**
  * What a post file authors. Just the content — the post's number is derived

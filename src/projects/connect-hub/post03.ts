@@ -1,69 +1,61 @@
 import { definePost } from '../../lib/factories';
 
-// 3/10 — Feature-first folder structure (matches the real ConnectHub/ tree).
+// 3/8 — The signature ConnectHub concept: data races and actors, grounded in
+// the real `actor MessageStore`.
 export default definePost({
-  title: 'PROJECT STRUCTURE',
-  highlightWord: 'STRUCTURE',
-  subtitle: 'A clear structure keeps a growing codebase easy to navigate.',
-  layout: 'folderTree',
-  quote: 'A project structure should explain ownership before you open a file.',
+  title: 'TWO TASKS, ONE INBOX',
+  highlightWord: 'ONE INBOX',
+  subtitle: 'Chat is the one place where two things really do write at once.',
+  layout: 'beforeAfter',
+  quote: 'A data race is not a crash. It is a message that silently never existed.',
   layoutData: {
-    roots: [
-      {
-        name: 'ConnectHub',
-        highlighted: true,
-        children: [
-          { name: 'App', note: 'Root · Auth / Main flows' },
-          { name: 'Core', note: 'DesignSystem · Networking · Persistence · Storage' },
-          { name: 'Domain', note: 'Model · Repository · UseCase' },
-          { name: 'Data', note: 'Mapper · Repository · MessageStore' },
-          {
-            name: 'Feature',
-            highlighted: true,
-            children: [
-              { name: 'Auth' },
-              { name: 'Feed' },
-              { name: 'Chat' },
-              { name: 'Search' },
-              { name: 'Profile' },
-              { name: 'Settings' },
-            ],
-          },
-          { name: 'DI', note: 'AppEnvironment' },
-        ],
-      },
+    beforeTitle: 'A shared class',
+    beforeItems: [
+      'Your send and the reply land together',
+      'Both read the same array',
+      'Both write it back',
+      'One message quietly disappears',
     ],
+    afterTitle: 'An actor',
+    afterItems: [
+      'Calls are serialized automatically',
+      'One task inside at a time',
+      'await marks every hop',
+      'The compiler enforces it',
+    ],
+    transitionLabel: 'actor',
   },
-  linkedInCaption: `📁 ConnectHub — Organizing a Growing iOS Project
+  linkedInCaption: `⚡ ConnectHub — Two Tasks, One Inbox
 
-As iOS projects grow, finding the right file often gets harder than writing it.
+Most of an app is safe by accident. One task, one screen, nothing overlapping.
 
-So I thought about organization before adding more features.
+Chat is not. In ConnectHub, your outgoing message and the simulated reply can land at the same moment — genuinely concurrent writes to the same list.
 
-Instead of grouping by type, ConnectHub separates responsibilities into clear layers:
+With a plain shared class, here's the failure:
 
-→ App → root, and the Auth vs Main flow switch.
-→ Core → design system, networking, persistence, storage, navigation.
-→ Domain → models, repository protocols, and use cases.
-→ Data → mappers, repository implementations, and the actor message store.
-→ Feature → self-contained features (Feed, Chat, Profile, Settings…).
-→ DI → the AppEnvironment composition root.
+Both tasks read the current messages array. Both append their own message. Both write it back. The second write overwrites the first — and one message is simply gone.
 
-Practical benefits:
+Nothing crashes. No error is logged. A message just never existed.
 
-→ New features have a predictable home.
-→ Shared code lives in one place.
-→ Business logic stays independent of the UI.
-→ Testing is easier because responsibilities are isolated.
-→ The project scales without becoming hard to navigate.
+That's what makes data races expensive: they don't fail loudly, they fail *quietly and occasionally*, which is the hardest kind of bug to reproduce.
 
-No structure is perfect, but a consistent one reduces cognitive load every time you open the project.
+The fix was to make the message store an actor.
 
-Next post: how data moves through ConnectHub — from the view down to SwiftData and the fake services.
+An actor guarantees that only one task is inside it at a time. Calls from outside are serialized automatically — so "read, append, write" can't be interleaved by another task halfway through.
+
+Three things I appreciated:
+
+→ No locks. I didn't write a single queue or mutex. The isolation is part of the type.
+→ The await tells the truth. Every call into the actor is marked, so the places where your code can suspend are visible instead of hidden.
+→ The compiler is on your side. Swift 6's concurrency checking won't let you casually pass mutable state across that boundary.
+
+The lesson: concurrency bugs aren't solved by being careful. They're solved by picking a type that makes the bug impossible to write.
+
+Next post: how a chat that isn't real still manages to feel alive.
 
 Open source — GitHub link in the comments.
 
-Do you organize by feature or by layer? 👇
+What's the worst race condition you've had to track down? 👇
 
-#iOSDevelopment #SwiftUI #Swift #MVVM #CleanArchitecture #SoftwareArchitecture #OpenSource #MobileDevelopment #LearningInPublic`,
+#iOSDevelopment #Swift #SwiftConcurrency #Actors #Concurrency #SoftwareArchitecture #OpenSource #MobileDevelopment #iOSDeveloper #LearningInPublic`,
 });

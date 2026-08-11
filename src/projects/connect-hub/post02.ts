@@ -1,48 +1,59 @@
 import { definePost } from '../../lib/factories';
 
-// 2/10 — Tech stack grouped by concern (real iOS choices from the codebase).
+// 2/8 — NEW concept: session as a root state machine. Mirrors the real
+// RootViewModel.Phase (loading / unauthenticated / authenticated).
 export default definePost({
-  title: 'WHY THIS TECH STACK?',
-  highlightWord: 'STACK',
-  subtitle: 'Every technology chosen to solve a specific engineering problem.',
-  layout: 'techStack',
-  quote: 'A good stack is a set of responsibilities, not a pile of libraries.',
+  title: 'WHO IS SIGNED IN?',
+  highlightWord: 'SIGNED IN',
+  subtitle: 'The first question the app asks — and the only one that reroutes everything.',
+  layout: 'stateMachine',
+  quote: 'When one value owns the answer, no screen has to guess.',
   layoutData: {
-    categories: [
-      { title: 'UI', technologies: ['SwiftUI', 'SF Symbols', 'NavigationStack'] },
-      { title: 'State', technologies: ['@Observable', '@MainActor'] },
-      { title: 'Architecture', technologies: ['MVVM', 'Repository', 'Use Cases'] },
-      { title: 'Concurrency', technologies: ['async/await', 'Actors', 'Combine'] },
-      { title: 'Data', technologies: ['SwiftData', '@AppStorage', 'Fake Services'] },
-      { title: 'Testing', technologies: ['Swift Testing', 'Protocol Fakes'] },
+    states: [
+      { name: 'loading', detail: 'Restoring a saved session behind the splash', kind: 'initial' },
+      { name: 'unauthenticated', detail: 'Show the auth flow' },
+      { name: 'authenticated', detail: 'Show the main app', kind: 'active' },
     ],
+    transitions: [
+      { from: 'loading', to: 'authenticated', label: 'a session was restored' },
+      { from: 'loading', to: 'unauthenticated', label: 'nothing saved' },
+      { from: 'unauthenticated', to: 'authenticated', label: 'sign in succeeds' },
+      { from: 'authenticated', to: 'unauthenticated', label: 'log out' },
+    ],
+    note: 'The root observes a session stream. Logging out anywhere re-routes the whole app.',
   },
-  linkedInCaption: `🛠️ ConnectHub — Why This Tech Stack?
+  linkedInCaption: `🔐 ConnectHub — Who Is Signed In?
 
-When building ConnectHub, I didn't pick technologies because they're trendy.
+Before ConnectHub can show anything, it has to answer one question: is someone signed in?
 
-I picked them because each one solves a specific engineering problem.
+Get this wrong and you get the classic bugs — a flash of the login screen for a signed-in user, or a logout that leaves half the app still showing private data.
 
-The thinking behind the stack:
+So I modelled it as a small state machine at the very root of the app. Three states:
 
-→ SwiftUI → declarative UI with clear, state-driven rendering.
-→ @Observable → predictable, lifecycle-aware screen state.
-→ async/await → asynchronous work without callback chains.
-→ Actors → thread-safe state (the chat message store is an actor).
-→ Repository Pattern → separate business logic from data sources.
-→ SwiftData → a single local source of truth for cached data.
-→ @AppStorage → lightweight settings and the demo session.
-→ Protocol DI → explicit dependencies and easy testing.
-→ Fake services → production-style architecture with no real backend.
-→ Swift Testing → verify logic and behavior with confidence.
+→ loading — restoring any saved session, behind the splash screen.
+→ unauthenticated — show the auth flow.
+→ authenticated — show the main app.
 
-The lesson: architecture isn't about using more libraries. It's about giving each layer one clear responsibility so the app stays easy to understand, maintain, and test.
+And the transitions between them:
 
-Next post: how I organized the project so a growing codebase stays manageable.
+→ loading → authenticated (a session was restored)
+→ loading → unauthenticated (nothing saved)
+→ unauthenticated → authenticated (sign in succeeds)
+→ authenticated → unauthenticated (log out)
+
+Two things made this work well:
+
+→ The root observes a session stream, not a one-time check. So logging out from deep inside Settings re-routes the entire app automatically — no manual navigation, no cleanup crawling through screens.
+
+→ That "loading" state is not optional. Restoring a session is asynchronous, and without an explicit third state you either block the launch or flash the wrong screen. Naming the in-between state is what removes the flicker.
+
+The wider lesson: when a question has more than two answers, an enum beats a Bool. isLoggedIn can't express "I don't know yet" — and "I don't know yet" is where the bugs live.
+
+Next post: what happens when two things write to the same data at once.
 
 Open source — GitHub link in the comments.
 
-Which layer would you want me to go deeper on? 👇
+Bool or enum for auth state — where do you land? 👇
 
-#iOSDevelopment #SwiftUI #Swift #MVVM #SoftwareArchitecture #SwiftData #Actors #OpenSource #MobileDevelopment #LearningInPublic`,
+#iOSDevelopment #SwiftUI #Swift #StateManagement #SoftwareArchitecture #Authentication #OpenSource #MobileDevelopment #iOSDeveloper #LearningInPublic`,
 });

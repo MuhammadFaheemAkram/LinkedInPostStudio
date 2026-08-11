@@ -8,8 +8,6 @@ import post05 from './post05';
 import post06 from './post06';
 import post07 from './post07';
 import post08 from './post08';
-import post09 from './post09';
-import post10 from './post10';
 
 export const connectHub = defineProject(connectHubMeta, [
   post01,
@@ -20,8 +18,6 @@ export const connectHub = defineProject(connectHubMeta, [
   post06,
   post07,
   post08,
-  post09,
-  post10,
 ]);
 
 export default connectHub;
