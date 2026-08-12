@@ -5,7 +5,10 @@ import { QuoteCard } from '../components/QuoteCard';
 import { Title } from '../components/Title';
 import { ArchitectureLayout } from '../layouts/ArchitectureLayout';
 import { BeforeAfterLayout } from '../layouts/BeforeAfterLayout';
+import { CalendarHeatLayout } from '../layouts/CalendarHeatLayout';
 import { ChartShowcaseLayout } from '../layouts/ChartShowcaseLayout';
+import { FanOutLayout } from '../layouts/FanOutLayout';
+import { HierarchyProgressLayout } from '../layouts/HierarchyProgressLayout';
 import { ChecklistLayout } from '../layouts/ChecklistLayout';
 import { DataModelLayout } from '../layouts/DataModelLayout';
 import { PitfallLayout } from '../layouts/PitfallLayout';
@@ -77,6 +80,12 @@ function renderLayout(post: RenderablePost) {
       return <StateMachineLayout data={post.layoutData} />;
     case 'sequence':
       return <SequenceLayout data={post.layoutData} />;
+    case 'calendarHeat':
+      return <CalendarHeatLayout data={post.layoutData} />;
+    case 'hierarchyProgress':
+      return <HierarchyProgressLayout data={post.layoutData} />;
+    case 'fanOut':
+      return <FanOutLayout data={post.layoutData} />;
     default:
       return post satisfies never;
   }

@@ -1,0 +1,21 @@
+import { defineProject } from '../../lib/factories';
+import { devJourneyMeta } from './project';
+import post01 from './post01';
+import post02 from './post02';
+import post03 from './post03';
+import post04 from './post04';
+import post05 from './post05';
+import post06 from './post06';
+import post07 from './post07';
+
+export const devJourney = defineProject(devJourneyMeta, [
+  post01,
+  post02,
+  post03,
+  post04,
+  post05,
+  post06,
+  post07,
+]);
+
+export default devJourney;

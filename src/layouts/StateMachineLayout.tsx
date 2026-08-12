@@ -1,5 +1,12 @@
 import { ArrowRightIcon } from '@heroicons/react/24/solid';
-import type { StateMachineLayoutData } from '../types/post';
+import type { StateMachineLayoutData, StateNode } from '../types/post';
+
+/** Literal class names so Tailwind's content scanner keeps them. */
+const NODE_CLASS: Record<NonNullable<StateNode['kind']>, string> = {
+  initial: 'state-node state-node-initial',
+  normal: 'state-node state-node-normal',
+  active: 'state-node state-node-active',
+};
 
 interface StateMachineLayoutProps {
   data: StateMachineLayoutData;
@@ -12,7 +19,7 @@ export function StateMachineLayout({ data }: StateMachineLayoutProps) {
         {data.states.map((state, index) => (
           <div
             key={`${state.name}-${index}`}
-            className={`state-node state-node-${state.kind ?? 'normal'}`}
+            className={NODE_CLASS[state.kind ?? 'normal']}
           >
             <div className="state-name">{state.name}</div>
             {state.detail ? <div className="state-detail">{state.detail}</div> : null}

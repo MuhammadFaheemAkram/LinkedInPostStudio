@@ -11,6 +11,12 @@ import type {
   DataModelEntity,
   DataModelLayoutData,
   DataModelRelation,
+  CalendarDay,
+  CalendarHeatLayoutData,
+  DayState,
+  FanOutLayoutData,
+  HierarchyNode,
+  HierarchyProgressLayoutData,
   PitfallLayoutData,
   SequenceLayoutData,
   SequenceStep,
@@ -934,6 +940,162 @@ function LayoutDataFields({
               }
             />
           </Field>
+          <Field label="Note">
+            <textarea
+              className="editor-input editor-textarea"
+              value={data.note ?? ''}
+              onChange={(event) => onChange({ ...data, note: event.target.value })}
+            />
+          </Field>
+        </>
+      );
+    }
+
+    case 'calendarHeat': {
+      const data: CalendarHeatLayoutData = post.layoutData;
+      return (
+        <>
+          <div className="editor-grid">
+            <Field label="Streak value">
+              <input
+                className="editor-input"
+                value={data.streakValue}
+                onChange={(event) => onChange({ ...data, streakValue: event.target.value })}
+              />
+            </Field>
+            <Field label="Streak label">
+              <input
+                className="editor-input"
+                value={data.streakLabel}
+                onChange={(event) => onChange({ ...data, streakLabel: event.target.value })}
+              />
+            </Field>
+          </div>
+          <Field label="Days" hint="One per line — label | done|missed|today|empty">
+            <textarea
+              className="editor-input min-h-44 resize-y font-mono"
+              value={data.days.map((d) => `${d.label} | ${d.state}`).join('\n')}
+              onChange={(event) =>
+                onChange({
+                  ...data,
+                  days: textToLines(event.target.value).map((line) => {
+                    const [label = '', state = 'empty'] = line.split('|').map((p) => p.trim());
+                    return {
+                      label,
+                      state: (['done', 'missed', 'today', 'empty'].includes(state) ? state : 'empty') as DayState,
+                    } satisfies CalendarDay;
+                  }),
+                })
+              }
+            />
+          </Field>
+          <Field label="Rules" hint="One per line.">
+            <textarea
+              className="editor-input editor-textarea"
+              value={linesToText(data.rules ?? [])}
+              onChange={(event) => onChange({ ...data, rules: textToLines(event.target.value) })}
+            />
+          </Field>
+        </>
+      );
+    }
+
+    case 'hierarchyProgress': {
+      const data: HierarchyProgressLayoutData = post.layoutData;
+      // Indentation-based: two spaces marks a child of the row above.
+      const format = (nodes: HierarchyProgressLayoutData['nodes'], depth = 0): string =>
+        nodes
+          .map((n) => {
+            const self = `${'  '.repeat(depth)}${n.title} | ${n.detail ?? ''} | ${n.percent}`;
+            const kids = n.children?.length ? `\n${format(n.children, depth + 1)}` : '';
+            return `${self}${kids}`;
+          })
+          .join('\n');
+
+      const parse = (value: string): HierarchyProgressLayoutData['nodes'] => {
+        const roots: HierarchyProgressLayoutData['nodes'] = [];
+        const stack: { node: HierarchyNode; depth: number }[] = [];
+        value.split('\n').forEach((raw) => {
+          if (!raw.trim()) return;
+          const depth = Math.floor((raw.match(/^ */)?.[0].length ?? 0) / 2);
+          const [title = '', detail = '', pct = '0'] = raw.trim().split('|').map((p) => p.trim());
+          const node: HierarchyNode = {
+            title,
+            ...(detail ? { detail } : {}),
+            percent: Number(pct) || 0,
+          };
+          while (stack.length && stack[stack.length - 1].depth >= depth) stack.pop();
+          if (!stack.length) roots.push(node);
+          else {
+            const parent = stack[stack.length - 1].node;
+            parent.children = parent.children ?? [];
+            parent.children.push(node);
+          }
+          stack.push({ node, depth });
+        });
+        return roots;
+      };
+
+      return (
+        <>
+          <Field label="Nodes" hint="2 spaces = child. Each row — title | detail | percent">
+            <textarea
+              className="editor-input min-h-52 resize-y font-mono"
+              value={format(data.nodes)}
+              onChange={(event) => onChange({ ...data, nodes: parse(event.target.value) })}
+            />
+          </Field>
+          <Field label="Note">
+            <textarea
+              className="editor-input editor-textarea"
+              value={data.note ?? ''}
+              onChange={(event) => onChange({ ...data, note: event.target.value })}
+            />
+          </Field>
+        </>
+      );
+    }
+
+    case 'fanOut': {
+      const data: FanOutLayoutData = post.layoutData;
+      const end = (key: 'input' | 'output', label: string) => (
+        <div className="editor-grid" key={key}>
+          <Field label={`${label} title`}>
+            <input
+              className="editor-input"
+              value={data[key].title}
+              onChange={(event) => onChange({ ...data, [key]: { ...data[key], title: event.target.value } })}
+            />
+          </Field>
+          <Field label={`${label} detail`}>
+            <input
+              className="editor-input"
+              value={data[key].detail ?? ''}
+              onChange={(event) => onChange({ ...data, [key]: { ...data[key], detail: event.target.value } })}
+            />
+          </Field>
+        </div>
+      );
+
+      return (
+        <>
+          {end('input', 'Input')}
+          <Field label="Branches" hint="One per line — title | detail">
+            <textarea
+              className="editor-input min-h-44 resize-y"
+              value={data.branches.map((b) => `${b.title} | ${b.detail ?? ''}`).join('\n')}
+              onChange={(event) =>
+                onChange({
+                  ...data,
+                  branches: textToLines(event.target.value).map((line) => {
+                    const [title = '', detail = ''] = line.split('|').map((p) => p.trim());
+                    return { title, ...(detail ? { detail } : {}) };
+                  }),
+                })
+              }
+            />
+          </Field>
+          {end('output', 'Output')}
           <Field label="Note">
             <textarea
               className="editor-input editor-textarea"

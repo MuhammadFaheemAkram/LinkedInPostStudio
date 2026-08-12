@@ -1095,4 +1095,147 @@
   .sequence-detail {
     @apply mt-2 text-[21px] font-medium leading-snug text-post-gray;
   }
+
+  /* -------------------------------------------------------- calendar heat */
+  .calendar-heat-layout {
+    @apply w-full space-y-6;
+  }
+
+  .streak-row {
+    @apply flex items-center gap-8 rounded-card border border-white/10 bg-post-card px-8 py-8 shadow-ios;
+  }
+
+  .streak-figure {
+    @apply flex shrink-0 flex-col items-center;
+  }
+
+  .streak-value {
+    @apply font-sans text-[86px] font-extrabold leading-none tracking-tight text-post-accent;
+  }
+
+  .streak-caption {
+    @apply mt-2 text-[22px] font-bold uppercase tracking-[0.1em] text-post-gray;
+  }
+
+  .day-strip {
+    @apply flex flex-1 items-end justify-between gap-2;
+  }
+
+  .day-cell-wrap {
+    @apply flex flex-col items-center gap-2;
+  }
+
+  .day-cell {
+    @apply h-[52px] w-[52px] rounded-xl border;
+  }
+
+  .day-cell-done {
+    @apply border-post-accent/50 bg-post-accent;
+  }
+
+  .day-cell-today {
+    @apply border-post-accent bg-post-accent/25;
+  }
+
+  .day-cell-missed {
+    @apply border-white/10 bg-post-quote;
+  }
+
+  .day-cell-empty {
+    @apply border-dashed border-white/10 bg-transparent;
+  }
+
+  .day-label {
+    @apply font-mono text-[20px] font-bold text-post-gray2;
+  }
+
+  /* --------------------------------------------------- hierarchy progress */
+  .hierarchy-progress-layout {
+    @apply w-full space-y-4;
+  }
+
+  .hp-row {
+    @apply rounded-2xl border border-white/10 bg-post-quote px-6 py-4;
+  }
+
+  .hp-row-root {
+    @apply border-post-accent/35 bg-post-accent/[0.07] px-7 py-5;
+  }
+
+  .hp-head {
+    @apply mb-3 flex items-center gap-4;
+  }
+
+  .hp-title {
+    @apply text-[24px] font-bold leading-tight text-post-white;
+  }
+
+  .hp-row-root .hp-title {
+    @apply text-[28px];
+  }
+
+  .hp-detail {
+    @apply font-mono text-[20px] font-medium text-post-gray2;
+  }
+
+  .hp-percent {
+    @apply ml-auto font-mono text-[24px] font-bold text-post-accent;
+  }
+
+  .hp-track {
+    @apply h-3 w-full overflow-hidden rounded-full bg-white/[0.07];
+  }
+
+  .hp-fill {
+    @apply h-full rounded-full bg-post-accent;
+  }
+
+  .hp-children {
+    @apply mt-3 space-y-3 border-l-2 border-post-accent/25 pl-6;
+  }
+
+  /* --------------------------------------------------------------- fan out */
+  .fan-out-layout {
+    @apply flex w-full flex-col items-center;
+  }
+
+  .fan-end {
+    @apply w-full rounded-card border border-white/10 bg-post-card px-8 py-6 text-center shadow-ios;
+  }
+
+  .fan-end-input {
+    @apply border-post-accent/40 bg-post-accent/[0.07];
+  }
+
+  .fan-end-output {
+    @apply border-post-accent/40 bg-post-accent/[0.07];
+  }
+
+  .fan-end-title {
+    @apply text-[28px] font-bold leading-tight text-post-white;
+  }
+
+  .fan-end-detail {
+    @apply mt-2 text-[21px] font-medium leading-snug text-post-gray;
+  }
+
+  .fan-arrow {
+    @apply my-4 flex justify-center text-post-accent;
+  }
+
+  .fan-branches {
+    @apply grid w-full items-stretch gap-4;
+  }
+
+  .fan-branch {
+    @apply flex flex-col justify-center rounded-2xl border border-white/10 bg-post-quote px-4 py-5 text-center;
+  }
+
+  .fan-branch-title {
+    @apply font-mono text-[22px] font-bold leading-tight text-post-white;
+  }
+
+  .fan-branch-detail {
+    @apply mt-2 text-[20px] font-medium leading-snug text-post-gray2;
+  }
 }

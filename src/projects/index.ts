@@ -2,6 +2,7 @@ import type { Project } from '../types/post';
 import { movieExplorer } from './movie-explorer';
 import { connectHub } from './connect-hub';
 import { spendWise } from './spend-wise';
+import { devJourney } from './dev-journey';
 
 /**
  * The project registry — the single list the studio renders from.
@@ -17,6 +18,7 @@ export const projects: Project[] = [
   movieExplorer,
   connectHub,
   spendWise,
+  devJourney,
   // import { yourProject } from './your-project'; then add it here.
 ];
 

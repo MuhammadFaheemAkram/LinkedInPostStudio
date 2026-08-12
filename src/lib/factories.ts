@@ -282,6 +282,50 @@ export function createDefaultLayoutData(layout: PostLayout): AnyLayoutData {
         ],
         note: 'Nothing here is real. It is choreography — and it feels alive anyway.',
       };
+    case 'calendarHeat':
+      return {
+        streakValue: '7',
+        streakLabel: 'day streak',
+        days: [
+          { label: 'M', state: 'done' },
+          { label: 'T', state: 'done' },
+          { label: 'W', state: 'missed' },
+          { label: 'T', state: 'done' },
+          { label: 'F', state: 'done' },
+          { label: 'S', state: 'done' },
+          { label: 'S', state: 'today' },
+        ],
+        rules: ['One completed topic marks the day', 'Two missed days resets to zero'],
+      };
+    case 'hierarchyProgress':
+      return {
+        nodes: [
+          {
+            title: 'iOS Developer',
+            detail: '18 / 32 topics',
+            percent: 56,
+            children: [
+              { title: 'Swift Fundamentals', detail: '8 / 8', percent: 100 },
+              { title: 'SwiftUI', detail: '6 / 10', percent: 60 },
+              { title: 'Concurrency', detail: '4 / 14', percent: 29 },
+            ],
+          },
+        ],
+        note: 'Nothing is stored. Every percentage is counted from the topics beneath it.',
+      };
+    case 'fanOut':
+      return {
+        input: { title: 'One query', detail: '"concurrency"' },
+        branches: [
+          { title: 'Roadmaps' },
+          { title: 'Topics' },
+          { title: 'Notes' },
+          { title: 'Resources' },
+          { title: 'Challenges' },
+        ],
+        output: { title: 'One grouped result', detail: 'Each kind keeps its own section' },
+        note: 'Five stores, one question, one read model.',
+      };
     default:
       return layout satisfies never;
   }

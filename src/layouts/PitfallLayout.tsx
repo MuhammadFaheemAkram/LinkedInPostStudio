@@ -13,11 +13,18 @@ const STAGE_LABEL: Record<Tone, string> = {
   fix: 'The Fix',
 };
 
+/** Literal class names so Tailwind's content scanner keeps them. */
+const CARD_CLASS: Record<Tone, string> = {
+  trap: 'pitfall-card pitfall-card-trap',
+  consequence: 'pitfall-card pitfall-card-consequence',
+  fix: 'pitfall-card pitfall-card-fix',
+};
+
 function Stage({ tone, stage }: { tone: Tone; stage: PitfallStage }) {
   const Icon = tone === 'trap' ? ExclamationTriangleIcon : tone === 'fix' ? CheckCircleIcon : ArrowDownIcon;
 
   return (
-    <div className={`pitfall-card pitfall-card-${tone}`}>
+    <div className={CARD_CLASS[tone]}>
       <div className="pitfall-label">
         <Icon className="h-6 w-6 shrink-0" aria-hidden="true" />
         <span>{STAGE_LABEL[tone]}</span>

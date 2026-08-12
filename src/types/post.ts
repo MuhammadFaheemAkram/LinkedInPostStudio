@@ -23,7 +23,10 @@ export type PostLayout =
   | 'chartShowcase'
   | 'statHighlight'
   | 'stateMachine'
-  | 'sequence';
+  | 'sequence'
+  | 'calendarHeat'
+  | 'hierarchyProgress'
+  | 'fanOut';
 
 /** Languages Prism is configured to highlight. */
 export type SupportedLanguage = 'swift' | 'kotlin' | 'java' | 'dart' | 'typescript';
@@ -290,6 +293,50 @@ export interface SequenceLayoutData {
   note?: string;
 }
 
+export type DayState = 'done' | 'missed' | 'today' | 'empty';
+
+export interface CalendarDay {
+  /** Short label under the cell, e.g. a weekday letter or date number. */
+  label: string;
+  state: DayState;
+}
+
+/** A run of days plus the rules that decide what a streak is. */
+export interface CalendarHeatLayoutData {
+  streakValue: string;
+  streakLabel: string;
+  days: CalendarDay[];
+  rules?: string[];
+}
+
+export interface HierarchyNode {
+  title: string;
+  /** Right-aligned detail, e.g. "4 / 6 topics". */
+  detail?: string;
+  /** 0–100. Drives the bar width. */
+  percent: number;
+  children?: HierarchyNode[];
+}
+
+/** Nested rows with progress bars — shows how completion aggregates upward. */
+export interface HierarchyProgressLayoutData {
+  nodes: HierarchyNode[];
+  note?: string;
+}
+
+export interface FanOutEnd {
+  title: string;
+  detail?: string;
+}
+
+/** One input fanning out to N sources and converging on one result. */
+export interface FanOutLayoutData {
+  input: FanOutEnd;
+  branches: FanOutEnd[];
+  output: FanOutEnd;
+  note?: string;
+}
+
 /** Union of every layout's data shape (used for editor defaults). */
 export type AnyLayoutData =
   | ComparisonLayoutData
@@ -313,7 +360,10 @@ export type AnyLayoutData =
   | ChartShowcaseLayoutData
   | StatHighlightLayoutData
   | StateMachineLayoutData
-  | SequenceLayoutData;
+  | SequenceLayoutData
+  | CalendarHeatLayoutData
+  | HierarchyProgressLayoutData
+  | FanOutLayoutData;
 
 /* ------------------------------------------------------------------ post model */
 
@@ -359,7 +409,10 @@ export type PostContent =
   | BasePost<'chartShowcase', ChartShowcaseLayoutData>
   | BasePost<'statHighlight', StatHighlightLayoutData>
   | BasePost<'stateMachine', StateMachineLayoutData>
-  | BasePost<'sequence', SequenceLayoutData>;
+  | BasePost<'sequence', SequenceLayoutData>
+  | BasePost<'calendarHeat', CalendarHeatLayoutData>
+  | BasePost<'hierarchyProgress', HierarchyProgressLayoutData>
+  | BasePost<'fanOut', FanOutLayoutData>;
 
 /**
  * What a post file authors. Just the content — the post's number is derived
