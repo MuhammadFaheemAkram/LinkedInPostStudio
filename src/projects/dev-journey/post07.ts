@@ -32,7 +32,7 @@ What each one actually taught me:
 
 → DevJourney — how to derive meaning. Read models per screen, testable time, and progress that rolls up instead of being written down.
 
-The thread running through all four: **keep the stored model small, and compute everything else.**
+The thread running through all four: keep the stored model small, and compute everything else.
 
 Movie Explorer stored favourites and derived the rest. ConnectHub stored posts and derived what the feed showed. SpendWise stored transactions and derived every total. DevJourney stores which topics you finished and derives every percentage, streak and summary.
 

@@ -22,7 +22,7 @@ DevJourney is the opposite. It's a developer learning hub, and it ships already 
 
 That one decision changed the engineering.
 
-When your app ships with content, you stop building CRUD screens and start building a system that has to *interpret* data:
+When your app ships with content, you stop building CRUD screens and start building a system that has to interpret data:
 
 → What does "62% complete" mean when progress lives on individual topics?
 → What actually counts as a learning streak — and what breaks it?

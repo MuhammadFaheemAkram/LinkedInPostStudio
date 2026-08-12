@@ -30,7 +30,7 @@ Every hard problem in ConnectHub came from size, not from any individual screen:
 
 None of these show up when you're building four screens. They're what you learn by building something big enough to break.
 
-The other thing I'd say: I built this with fake services and no backend, and it made the architecture *more* honest, not less. With nothing to blame on the network, every problem left was a design problem.
+The other thing I'd say: I built this with fake services and no backend, and it made the architecture more honest, not less. With nothing to blame on the network, every problem left was a design problem.
 
 That wraps Project 02 of "Modern iOS in Practice". Next up: SpendWise — where the challenge stops being concurrency and starts being correctness.
 

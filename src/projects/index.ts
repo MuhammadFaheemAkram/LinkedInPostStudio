@@ -3,6 +3,7 @@ import { movieExplorer } from './movie-explorer';
 import { connectHub } from './connect-hub';
 import { spendWise } from './spend-wise';
 import { devJourney } from './dev-journey';
+import { momentum } from './momentum';
 
 /**
  * The project registry — the single list the studio renders from.
@@ -19,6 +20,7 @@ export const projects: Project[] = [
   connectHub,
   spendWise,
   devJourney,
+  momentum,
   // import { yourProject } from './your-project'; then add it here.
 ];
 

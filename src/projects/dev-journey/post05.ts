@@ -46,7 +46,7 @@ What that buys:
 → The UI groups results by kind, which is genuinely more useful than one blended list — "3 topics, 1 note" tells you more than "4 results".
 → The five queries run against their own stores and get composed in one use case, not in the view.
 
-The general lesson: reach for a common abstraction when things really are the same, and resist it when they only *look* similar. A tagged union of five concrete types beat one vague type that pretended to cover all of them.
+The general lesson: reach for a common abstraction when things really are the same, and resist it when they only look similar. A tagged union of five concrete types beat one vague type that pretended to cover all of them.
 
 Next post: who decides what you should learn next.
 

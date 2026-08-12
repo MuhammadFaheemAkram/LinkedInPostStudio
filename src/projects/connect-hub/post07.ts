@@ -22,7 +22,7 @@ A social feed looks like the simplest screen in the app. It's a list. You scroll
 It's actually three decisions stacked on top of each other, and each one only works because of the one below it.
 
 1. Cached posts — the foundation.
-The feed renders from SwiftData *before* any request goes out. Open the app on a plane and you still see your feed. The network refreshes the cache; it never blocks the first paint.
+The feed renders from SwiftData before any request goes out. Open the app on a plane and you still see your feed. The network refreshes the cache; it never blocks the first paint.
 
 2. Paged fetching — the middle.
 Posts load a page at a time, with an explicit flag for whether more exist. Two details mattered more than I expected:
@@ -34,7 +34,7 @@ Posts load a page at a time, with an explicit flag for whether more exist. Two d
 3. Instant feel — the top.
 Because 1 and 2 hold, nothing the user does has to wait. Scroll, like, bookmark — all local.
 
-That's the part I'd carry into any list screen: perceived speed is mostly about what you *don't* make the user wait for. The cache means they never wait to see something. Paging means they never wait for everything.
+That's the part I'd carry into any list screen: perceived speed is mostly about what you don't make the user wait for. The cache means they never wait to see something. Paging means they never wait for everything.
 
 Users never see your loading strategy. They only feel it.
 

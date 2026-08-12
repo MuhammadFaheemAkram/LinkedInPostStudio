@@ -22,7 +22,7 @@ Tapping like should be the most boring interaction in a social app. It's also an
 
 The naive version: tap → call the server → wait → update the UI. Even at 200ms, that's a button that feels sticky. With no connection, it does nothing at all.
 
-ConnectHub inverts it. The like writes to the local store, and the UI updates because it is *observing* that store.
+ConnectHub inverts it. The like writes to the local store, and the UI updates because it is observing that store.
 
 What changes:
 

@@ -46,7 +46,7 @@ The fix was to treat time as what it actually is: an input the code doesn't cont
 
 The streak calculator now receives "now" instead of fetching it. Suddenly every scenario above is a two-line test, and they run instantly.
 
-The realisation that stuck with me: I already knew to hide the network behind a protocol. The clock is the same category of thing — a global, uncontrollable input. It just doesn't *feel* like a dependency because it's built into the language.
+The realisation that stuck with me: I already knew to hide the network behind a protocol. The clock is the same category of thing — a global, uncontrollable input. It just doesn't feel like a dependency because it's built into the language.
 
 A decent rule of thumb: if a test can't control it, it's a dependency. Date(), UUID(), random numbers, the file system, the locale. Injecting them costs almost nothing and buys you the ability to test the interesting cases.
 

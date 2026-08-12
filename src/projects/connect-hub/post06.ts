@@ -37,7 +37,7 @@ The fix is to make the search patient. In ConnectHub that's a small Combine pipe
 
 → Then hand off to async/await for the actual work.
 
-This is the one place in the whole app where I reached for Combine. Everywhere else, async/await is simpler and clearer. But debouncing is a *continuous stream over time* problem, and that's precisely what Combine is good at.
+This is the one place in the whole app where I reached for Combine. Everywhere else, async/await is simpler and clearer. But debouncing is a continuous stream over time problem, and that's precisely what Combine is good at.
 
 That's the real takeaway: async/await and Combine aren't competitors. One-shot work → async/await. A stream of events where timing matters → Combine. Knowing which question you're answering picks the tool.
 

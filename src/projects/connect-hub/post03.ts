@@ -37,7 +37,7 @@ Both tasks read the current messages array. Both append their own message. Both 
 
 Nothing crashes. No error is logged. A message just never existed.
 
-That's what makes data races expensive: they don't fail loudly, they fail *quietly and occasionally*, which is the hardest kind of bug to reproduce.
+That's what makes data races expensive: they don't fail loudly, they fail quietly and occasionally, which is the hardest kind of bug to reproduce.
 
 The fix was to make the message store an actor.
 

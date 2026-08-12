@@ -41,7 +41,7 @@ A topic has one stored fact: isCompleted. Everything above it is computed on rea
 
 The nice consequence is that sections aren't stored entities at all. They're derived by grouping a roadmap's topics on read — a read model shaped for one screen rather than a table in the database.
 
-That's the pattern I got most out of here: separate what is *true* from what is *displayed*.
+That's the pattern I got most out of here: separate what is true from what is displayed.
 
 Stored: the handful of facts a user actually asserted.
 Derived: every rollup, percentage and summary built from them.
